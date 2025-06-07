@@ -1,0 +1,37 @@
+{{ define "cards" }}
+    {{ $section := . }}
+    {{ with .Params.section_path }}
+        {{ $section = site.GetPage . }}
+    {{ end }}
+
+    {{ template "page_header" $section.Title }}
+
+    <main>
+        {{ $show_pages := $section.Pages }}
+        {{ if .Paginator }}
+            {{ $show_pages = .Paginator.Pages }}           
+        {{ end }}
+
+        {{ template "cards_posts" $show_pages }}
+    </main>
+
+    {{ if .Paginator }}
+        <ul class="pagination">
+            {{ if .Paginator.HasPrev }}
+                <li class="page-item page-prev">
+                    <a href="{{ .Paginator.Prev.URL }}" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">← Prev</span>
+                    </a>
+                </li>
+            {{ end }}
+
+            {{ if .Paginator.HasNext }}
+                <li class="page-item page-next">
+                    <a href="{{ .Paginator.Next.URL }}" class="page-link" aria-label="Next">
+                        <span>Next →</span>
+                    </a>
+                </li>
+            {{ end }}
+        </ul>
+    {{ end }}
+{{ end }}

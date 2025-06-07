@@ -1,0 +1,51 @@
+base_url = "http://localhost:1313/"
+title = "hzzhu"
+description = "appolo power by hugo."
+build_search_index = true
+generate_feeds = true
+compile_sass = true
+minify_html = true
+taxonomies = [{ name = "tags" }]
+
+[markdown]
+highlight_code = true
+highlight_theme = "dracula"
+
+[params]
+use_cdn = false
+favicon = "/icon/favicon.png"
+theme = "toggle"              # light, dark, auto, toggle
+fancy_code = true
+dynamic_note = true           # a note that can be toggled
+mathjax = true
+mathjax_dollar_inline_enable = true
+
+menu = [
+    { name = "/posts", url = "/posts", weight = 1 },
+    { name = "/projects", url = "/projects", weight = 2 },
+    { name = "/about", url = "/about", weight = 3 },
+]
+
+socials = [
+    { name = "github", url = "https://github.com/zhuzaiye/", icon = "github" },
+    { name = "email", url = "mailto:hzzhu92@gmail.com", icon = "email" },
+    { name = "twitter", url = "https://twitter.com/pigzhu11", icon = "twitter" },
+    { name = "rss", url = "/index.xml", icon = "rss" },
+]
+
+stylesheets = [
+    # "custom.css"    # at /static/custom.css
+]
+
+[extra]
+
+[extra.analytics]
+enabled = false
+
+[extra.analytics.goatcounter]
+user = "your_user"
+host = "example.com" # default= goatcounter.com
+
+[extra.analytics.umami]
+website_id = "43929cd1-1e83...."
+host_url = "https://stats.mywebsite.com" # default: https://api-gateway.umami.dev/

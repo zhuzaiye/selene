@@ -1,0 +1,21 @@
+{{/* layouts/shortcodes/mermaid.html */}}
+<script src="{{ "js/mermaid.js" | relURL }}"></script>
+
+<pre class="mermaid">
+  {{/*  在 Hugo 中，短代码文件的内容使用 {{ .Inner }} 来获取短代码的主体内容  */}}
+  {{/*  使用 | safe 确保内容被安全地输出为 HTML  */}}
+  {{ .Inner }}
+</pre>
+
+
+{{/*  
+  在markdown中使用Mermaid图标  
+
+  {{< mermaid >}}
+  graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+  {{< /mermaid >}}
+*/}}

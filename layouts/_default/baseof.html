@@ -1,0 +1,23 @@
+<!-- 定义基础模板 -->
+<!DOCTYPE html>
+<html lang="{{.Site.Language}}" class="dark light">
+{{/* header part */}}
+{{ partial "header.html" . }}
+
+<body>
+   <div class="content">
+      {{/* nav part */}}
+      {{ partial "nav.html" . }}
+
+      {{/* content part */}}
+      {{ block "main" . }}
+      {{ end }}
+
+      {{ if .Params.comment }}
+         <div class="giscus"></div>
+         {{ partial "_giscus_script.html" . }}
+      {{ end }}
+   </div>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+:root.dark {
+  --text-0: rgba(255, 255, 255, 87%);
+  --text-1: rgba(255, 255, 255, 60%);
+
+  --bg-0: #282A36;
+  --bg-1: #44475A;
+  --bg-2: rgba(0, 0, 0, 10%);
+  --bg-code: rgba(0, 0, 0, 10%);
+
+  --primary-color: #BD93F9;
+  --hover-color: white;
+
+  --table-bg: rgba(0, 0, 0, 10%);
+
+  .social>img {
+    filter: invert(1);
+  }
+}

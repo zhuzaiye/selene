@@ -1,0 +1,71 @@
+@mixin base-label-style ($bg-color) {
+  // background: $bg-color;
+  color: $bg-color;
+  border-radius: 0 0 0.25rem 0.25rem;
+  font-size: 12px;
+  letter-spacing: 0.025rem;
+  padding: 0.1rem 0.5rem;
+  text-align: right;
+  text-transform: uppercase;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 0.1rem;
+}
+
+.code-label {
+  @include base-label-style(#d32b5d); // Default background color
+}
+
+code {
+  background-color: var(--bg-1);
+  padding: 0.1em 0.2em;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+pre {
+  /* Rounded border */
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+
+  line-height: 1.4;
+  overflow-x: auto;
+  padding: 1em;
+
+  font-family: var(--code-font);
+  background-color: var(--bg-code) !important;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
+pre code {
+  background-color: transparent;
+  color: inherit;
+  font-size: 100%;
+  padding: 0;
+
+  // We only want a border around `code` and not `pre code` blocks.
+  border: 0;
+}
+
+span {
+  text-decoration: none !important;
+}
+
+
+.clipboard-button,
+.clipboard-button svg {
+  all: unset;
+  cursor: pointer;
+  position: absolute;
+  bottom: 5px;
+  /* 5px from the bottom */
+  right: 5px;
+  /* 5px from the right */
+  z-index: 10;
+  background-color: transparent;
+  border: none;
+  fill: #ef5350;
+  /* Sets the color of the SVG, assuming it's an SVG icon */
+}

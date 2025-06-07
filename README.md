@@ -1,13 +1,13 @@
-# Hugo Apllo theme
+# Hugo Appolo theme
 
 ## New Hugo site
 
 ```
-hugo new site apllo-theme
+hugo new site appolo-theme
 ```
 
 ```
-apllo-hugo/
+appolo-hugo/
 ├── archetypes/
 │   └── default.md    <-- 内容模板
 ├── assets/           <-- 资源管道传递的全局资源,例如sass等

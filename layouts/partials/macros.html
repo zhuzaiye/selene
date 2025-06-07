@@ -1,0 +1,167 @@
+{{/* 列出标签文章的宏 */}}
+{{ define "list_tag_posts" }}
+    {{ $pages := .pages }}
+    {{ $tag_name := .tag_name }}
+    {{ if $tag_name }}
+        <div class="page-header">
+            Entries tagged :: {{ $tag_name }}<span class="primary-color" style="font-size: 1.6em">.</span>
+        </div>
+    {{ else }}
+        <div class="page-header">
+            All articles<span class="primary-color" style="font-size: 1.6em">.</span>
+        </div>
+    {{ end }}
+
+    <main class="list">
+        {{ template "list_posts" (slice $pages) }}
+    </main>
+{{ end }}
+
+{{/* 列出文章的宏 */}}
+{{ define "list_posts" }}
+    <ul>
+        {{ range . }}
+            {{ $hide_read_more := false }} 
+            <li class="list-item">
+                <section>
+                    <div class="post-header">
+                        <time>{{ .Date.Format "2006-01-02" }}</time>
+
+                        <div>
+                            <h1 class="title">
+                                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                                {{ if .Draft }}<span class="draft-label">DRAFT</span>{{ end }}
+                            </h1>
+
+                            <div class="meta">
+                                <div class="description">
+                                    {{ if .Description }}
+                                        {{ .Description }}
+                                    {{ else if .Summary }}
+                                        {{ .Summary }}&hellip;
+                                    {{ else }}
+                                        {{ $hide_read_more := true }}
+                                    {{ end }}
+                                </div>
+
+                                {{ if $hide_read_more }}<a class="readmore" href="{{ .Permalink }}">Read more ⟶</a>{{ end }}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </li>
+        {{ end }}
+    </ul>
+{{ end }}
+
+{{/* 列出术语的宏 */}}
+{{ define "list_terms" }}
+    <ul>
+        {{ range . }}
+            <section class="list-item">
+                <h1 class="title">
+                    <a href="{{ .Permalink }}">{{ .Name }}</a>
+                </h1>
+            </section>
+        {{ end }}
+    </ul>
+{{ end }}
+
+{{/* 列出标签的宏 */}}
+{{ define "tags" }}
+    {{ if .Params.taxonomies.tags }}
+        <span class="post-tags-inline">
+            {{ if .short }}
+                ::
+                {{ $sep := "," }}
+            {{ else }}
+                :: tags:&nbsp;
+                {{ $sep := "&nbsp;" }}
+            {{ end }}
+        </span>
+    {{ end }}
+{{ end }}
+
+{{/* 页面标题的宏 */}}
+{{ define "page_header" }}
+    <div class="page-header">
+        {{ . }}<span class="primary-color" style="font-size: 1.6em">.</span>
+    </div>
+{{ end }}
+
+{{/* 首页的宏 */}}
+{{ define "home_page" }}
+    <main>
+        <article>
+            <section class="body">
+                {{ template "page_header" .Title }}
+                {{ .Content }}
+            </section>
+        </article>
+    </main>
+{{ end }}
+
+{{/* 内容的宏 */}}
+{{ define "content" }}
+    <main>
+        <article>
+            <div class="title">
+                {{ template "page_header" .Title }}
+
+                <div class="meta">
+                    {{ if .Date }}Posted on <time>{{ .Date.Format "2006-01-02" }}</time>{{ end }}
+                    {{ if .Params.updated }}{{ $updated := time .Params.updated }}:: Updated on <time>{{ $updated.Format "2006-01-02" }}</time>{{ end }}
+                    {{ if .Params.read_time }}:: <time>{{ .Params.reading_time }}</time> Min Read{{ end }}
+                    {{ if .Draft }}<span class="draft-label">DRAFT</span>{{ end }}
+                </div>
+            </div>
+
+            {{ if .Params.tldr }}
+                <div class="tldr">
+                    <strong>tl;dr:</strong>
+                    {{ .Params.extra.tldr }}
+                </div>
+            {{ end }}
+
+            <section class="body">
+                {{ .Content }}
+            </section>
+        </article>
+    </main>
+{{ end }}
+
+{{/* 列出卡片文章的宏 */}}
+{{ define "cards_posts" }}
+    <div class="cards">
+        {{ range . }}
+            <div class="card">
+                {{ if .Params.local_image }}
+                    <img class="card-image" alt="{{ .Params.extra.local_image }}" src="{{ .Params.extra.local_image | relURL }}" />
+                {{ else if .Params.remote_image }}
+                    <img class="card-image" alt="{{ .Params.extra.remote_image }}" src="{{ .Params.extra.remote_image }}" />
+                {{ else }}
+                    <div class="card-image-placeholder"></div>
+                {{ end }}
+
+                <div class="card-info">
+                    <h1 class="card-title">
+                        {{ if .Params.link_to }}
+                            <a href="{{ .Params.link_to }}">{{ .Title }}</a>
+                        {{ else }}
+                            <a href="{{ .Permalink | safe }}">{{ .Title }}</a>
+                        {{ end }}
+                    </h1>
+
+                    <div class="meta">
+                        {{ if .Date }}<time>{{ .Date.Format "2006-01-02" }}</time>{{ end }}
+                        {{ if .Params.draft }}<span class="draft-label">DRAFT</span>{{ end }}
+                    </div>
+
+                    <div class="card-description">
+                        {{ if .Description }}{{ .Description }}{{ end }}
+                    </div>
+                </div>
+            </div>
+        {{ end }}
+    </div>
+{{ end }}

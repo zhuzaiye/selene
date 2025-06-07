@@ -1,0 +1,11 @@
+# vscode
+.vscode/
+
+# publish contents
+public/
+resources/
+
+# hugo build lock
+.hugo_build.lock
+
+*.bat

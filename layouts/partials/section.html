@@ -1,0 +1,46 @@
+{{ define "section" }}
+    
+    {{ $section := . }}
+    {{ with .Params.section_path }}
+        {{ $section = site.GetPage .}}
+    {{ end }}
+    
+    
+    {{ if $section }}
+        {{ template "page_header" $section.Title }}
+    {{ else }}
+        <p>No section available.</p>
+    {{ end }}
+   
+    
+    <main class="list">
+        {{ $show_pages := $section.Pages }}
+        {{ $paginator := .Paginate $section.Pages }}
+        {{ if $paginator }}
+            {{ $show_pages = $paginator.Pages }}
+        {{ end }}
+
+        {{ template "list_posts" $show_pages }}
+    </main>
+    
+
+    {{ if .Paginator }}
+        <ul class="pagination">
+            {{ if .Paginator.HasPrev }}
+                <li class="page-item page-prev">
+                    <a href="{{ .Paginator.Prev.URL }}" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">← Prev</span>
+                    </a>
+                </li>
+            {{ end }}
+
+            {{ if .Paginator.HasNext }}
+                <li class="page-item page-next">
+                    <a href="{{ .Paginator.Next.URL }}" class="page-link" aria-label="Next">
+                        <span>Next →</span>
+                    </a>
+                </li>
+            {{ end }}
+        </ul>
+    {{ end }}
+{{ end }}
