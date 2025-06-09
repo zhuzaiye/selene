@@ -13,7 +13,8 @@
         repo: '{{ .Site.Params.gitalk.repo }}',
         owner: '{{ .Site.Params.gitalk.owner }}',
         admin: ['{{ .Site.Params.gitalk.owner }}'],
-        body: decodeURI(location.href)
+        body: decodeURI(location.href),
+        language: "en"
       });
       gitalk.render('gitalk-container');
     </script>
