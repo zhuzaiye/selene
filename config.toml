@@ -37,6 +37,12 @@ stylesheets = [
     # "custom.css"    # at /static/custom.css
 ]
 
+[params.gitalk]           
+owner = ""             
+repo = ""              
+clientId = ""           
+clientSecret = ""  
+
 [extra]
 
 [extra.analytics]

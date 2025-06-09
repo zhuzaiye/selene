@@ -10,13 +10,10 @@
       {{ partial "nav.html" . }}
 
       {{/* content part */}}
-      {{ block "main" . }}
-      {{ end }}
+      {{ block "main" . }}{{ end }}
 
-      {{ if .Params.comment }}
-         <div class="giscus"></div>
-         {{ partial "_giscus_script.html" . }}
-      {{ end }}
+      {{ partial "comments.html" . }}
+
    </div>
 </body>
 

@@ -3,7 +3,7 @@ title: "Configuring Apollo"
 date: "2024-07-09"
 draft: false
 description: Enables or disables the search functionality for your blog.
-toc: true
+comment: false
 ---
 
 # Site Configuration
