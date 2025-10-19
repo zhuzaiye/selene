@@ -1,3 +1,50 @@
 {{ define "main" }}
-    {{ template "content" .}}
+<article class="post-single">
+    <!-- 文章头部：标题和元数据 -->
+    <header class="post-header">
+        <!-- 1. 文章标题 -->
+        <h1 class="post-title">{{ .Title }}</h1>
+        
+        <!-- 2. 元数据区域：日期、标签、描述垂直排列 -->
+        <div class="post-meta">
+            <!-- 日期 -->
+            {{ if .Date }}
+            <div class="post-date">
+                <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                    {{ .Date.Format "January 2, 2006" }}
+                </time>
+            </div>
+            {{ end }}
+            
+            <!-- 标签 -->
+            {{ with .Params.tags }}
+            <div class="post-tags">
+                {{ range . }}
+                <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" class="post-tag">#{{ . }}</a>
+                {{ end }}
+            </div>
+            {{ end }}
+            
+            <!-- 描述 -->
+            {{ if .Params.description }}
+            <div class="post-description">
+                {{ .Params.description }}
+            </div>
+            {{ end }}
+        </div>
+    </header>
+
+    <!-- 文章内容 -->
+    <div class="post-content">
+        {{ .Content }}
+    </div>
+</article>
+
+{{ if and .TableOfContents (eq .Section "posts") }}
+<aside class="toc-sidebar">
+    <div class="toc-sticky">
+        {{ .TableOfContents }}
+    </div>
+</aside>
+{{ end }}
 {{ end }}

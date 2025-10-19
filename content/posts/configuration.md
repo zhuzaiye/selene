@@ -1,9 +1,10 @@
 ---
-title: "Configuring Apollo"
+title: "Configuring Slene"
 date: "2024-07-09"
 draft: false
 description: Enables or disables the search functionality for your blog.
 comment: false
+tags: ["configuration", "hugo", "apollo"]
 ---
 
 # Site Configuration

@@ -1,35 +1,32 @@
 <header>
     <div class="main">
         {{ if .Site.Params.logo }}
-            <a href="{{ .Site.BaseURL }}" class="logo">
-                <img alt="{{ .Site.Title }}" src="{{ .Site.Params.logo | relURL }}">
-            </a>
+        <a href="{{ .Site.BaseURL }}" class="logo">
+            <img alt="{{ .Site.Title }}" src="{{ .Site.Params.logo | relURL }}">
+        </a>
         {{ else }}
-            <a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+        <a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
         {{ end }}
 
         <div class="socials">
-            {{ range .Site.Params.socials }}
-                <a rel="me" href="{{ .url }}" class="social">
-                    <img alt="{{ .name }}" src="{{ printf "icons/social/%s.svg" .icon | relURL }}">
-                </a>
+            {{ range .Site.Params.social }}
+            <a rel="me" href="{{ .url }}" class="social">
+                <img alt="{{ .name }}" src="{{ printf "/icons/social/%s.svg" .icon | relURL }}">
+            </a>
             {{ end }}
         </div>
     </div>
 
     <nav>
         {{ range .Site.Params.menu }}
-            <a href="{{ .url | relURL }}" style="margin-left: 0.25em">{{ .name }}</a>
+        <a href="{{ .url | relURL }}" style="margin-left: 0.25em">{{ .name }}</a>
         {{ end }}
         |
         {{ if eq .Site.Params.theme "toggle" }}
-            <a id="dark-mode-toggle" onclick="toggleTheme(); event.preventDefault();" href="#">
-                <img src="{{ "icons/sun.svg" | relURL }}" id="sun-icon" style="filter: invert(1)" alt="Light" />
-                <img src="{{ "icons/moon.svg" | relURL }}" id="moon-icon" alt="Dark" />
-            </a>
-            
-            <!-- Inititialize the theme toggle icons -->
-            <script>updateItemToggleTheme()</script>
+        <a id="dark-mode-toggle" onclick="toggleTheme(); return false;" href="#">
+            <img src="{{ "/icons/sun.svg" | relURL }}" id="sun-icon" style="filter: invert(1)" alt="Light" />
+            <img src="{{ "/icons/moon.svg" | relURL }}" id="moon-icon" alt="Dark" />
+        </a>
         {{ end }}
     </nav>
 </header>

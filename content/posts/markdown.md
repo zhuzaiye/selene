@@ -4,6 +4,7 @@ date: "2022-01-01"
 updated: "2022-05-01"
 comment: true
 description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+tags: ["markdown", "tutorial", "demo"]
 ---
 
 # H1

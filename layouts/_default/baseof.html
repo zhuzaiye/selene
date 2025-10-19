@@ -1,19 +1,22 @@
-<!-- 定义基础模板 -->
+<!-- Define base template -->
 <!DOCTYPE html>
 <html lang="{{.Site.Language}}" class="dark light">
 {{/* header part */}}
 {{ partial "header.html" . }}
 
 <body>
-   <div class="content">
-      {{/* nav part */}}
-      {{ partial "nav.html" . }}
+   <div class="page-wrapper">
+      <div class="page-container">
+         <div class="main-content">
+            {{/* nav part */}}
+            {{ partial "nav.html" . }}
 
-      {{/* content part */}}
-      {{ block "main" . }}{{ end }}
+            {{/* content part */}}
+            {{ block "main" . }}{{ end }}
 
-      {{ partial "comments.html" . }}
-
+            {{ partial "comments.html" . }}
+         </div>
+      </div>
    </div>
 </body>
 

@@ -1,13 +1,16 @@
 .page-header {
   font-size: 2.5em;
-  line-height: 100%;
-  font-family: var(--header-font);
+  line-height: 1.15;
+  font-family: var(--display-font);
+  font-weight: 900;
+  letter-spacing: -0.02em;
   margin: 2.5rem 0px 1rem 0px;
 }
 
 .centered-header {
-  font-family: var(--header-font);
-
+  font-family: var(--display-font);
+  font-weight: 900;
+  letter-spacing: -0.02em;
   position: absolute;
   top: 40%;
   left: 50%;
@@ -19,23 +22,73 @@
 header {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-between;
+  align-items: center;
   padding: 1em 0;
   font-size: 1.25rem;
+  gap: 20px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 header .main {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: center;
   gap: 12px;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  font-family: var(--header-font);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 
   /* Otherwise header and menu is too close on small screens*/
-  margin-bottom: 10px;
+  margin-bottom: 0;
+  
+  a {
+    color: var(--text-0);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--primary-color);
+    }
+  }
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--text-font);
+  font-size: 1.05rem;
+  
+  a {
+    color: var(--text-1);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    font-weight: 500;
+    
+    &:hover {
+      color: var(--primary-color);
+    }
+  }
+}
+
+/* 小屏幕响应式布局 */
+@media (max-width: 768px) {
+  header {
+    flex-wrap: wrap;
+  }
+  
+  header .main {
+    margin-bottom: 10px;
+  }
 }
 
 .socials {
@@ -47,32 +100,60 @@ header .main {
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-end;
-  gap: 6px;
+  gap: 12px;
 }
 
 .social {
   border-bottom: unset;
   background-image: unset;
   padding: 2px;
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .social>img {
   border: unset;
-  width: 24px;
-  height: 24px;
-
+  width: 22px;
+  height: 22px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .meta {
   color: #999;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
+  font-size: 0.95em;
+  font-family: var(--text-font);
 }
 
-#dark-mode-toggle>img {
-  display: none;
-  width: 16px;
-  height: 16px;
-  border: unset;
+#dark-mode-toggle {
+  cursor: pointer;
+  
+  img {
+    width: 20px;
+    height: 20px;
+    border: unset;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: rotate(15deg);
+    }
+  }
+  
+  #sun-icon {
+    display: none;
+  }
+  
+  #moon-icon {
+    display: none;
+  }
 }
 
 h1,
@@ -81,12 +162,39 @@ h3,
 h4,
 h5,
 h6 {
-  font-size: 1.2rem;
-  margin-top: 1.25em;
+  font-family: var(--header-font);
+  font-weight: 600;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--text-0);
 }
 
 h1 {
-  font-size: 1.35rem;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 1em;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.3rem;
+}
+
+h4 {
+  font-size: 1.2rem;
+}
+
+h5 {
+  font-size: 1.1rem;
+}
+
+h6 {
+  font-size: 1rem;
 }
 
 h1::before {

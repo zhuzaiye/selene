@@ -11,9 +11,12 @@ https://raw.githubusercontent.com/not-matthias/apollo/refs/heads/main/content/po
 ## Rendered Example
 
 {{< mermaid >}}
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
+graph LR
+    A[Start] --> B[Initialize]
+    B --> C[Processing]
+    C --> D[Complete]
+    D --> E[Success]
+
+    style A fill:#f9f,stroke:#333
+    style E fill:#9f9,stroke:#333
 {{< /mermaid >}}

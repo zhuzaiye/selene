@@ -1,0 +1,132 @@
+/* TOC侧边栏 - 固定在 content 右侧 */
+.toc-sidebar {
+  position: fixed;
+  left: calc(50% + var(--page-width) / 2 + 2rem);
+  top: 80px;
+  width: 280px;
+  max-height: calc(100vh - 120px);
+  z-index: 50;
+  
+  /* 当屏幕宽度不够显示 TOC 时隐藏 */
+  @media only screen and (max-width: 1400px) {
+    display: none;
+  }
+}
+
+.toc-sticky {
+  width: 100%;
+  padding: 1rem;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--bg-2, rgba(255, 255, 255, 0.2));
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--primary, rgba(255, 255, 255, 0.3));
+  }
+  
+  // TOC标题样式
+  &::before {
+    content: "Table of Contents";
+    display: block;
+    font-family: var(--header-font);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-1);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  
+  li,
+  a {
+    font-family: var(--text-font);
+    font-size: 0.9rem;
+    color: var(--text-2);
+    transition: color 0.2s ease;
+    border-bottom: none;
+    text-decoration: none;
+    line-height: 1.65;
+  }
+
+  a:hover {
+    color: var(--primary-color, var(--text-0)) !important;
+    background-color: transparent !important;
+  }
+
+  .heading {
+    font-weight: 700;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 1.2em;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  & > nav > ul {
+    padding-left: 0;
+    margin-top: 0;
+  }
+
+  li.selected > a {
+    color: var(--primary-color, var(--text-0)) !important;
+    font-weight: 700;
+    position: relative;
+    
+    &::before {
+      content: "▶ ";
+      display: inline-block !important;
+      color: var(--primary-color, #bd93f9) !important;
+      font-weight: 700;
+      margin-right: 0.5rem;
+      font-size: 0.8em;
+      vertical-align: middle;
+    }
+  }
+
+  .parent > a {
+    color: var(--text-1, var(--text-0));
+    font-weight: 500;
+  }
+  
+  a {
+    display: block;
+    padding: 0.2rem 0;
+    transition: all 0.2s ease;
+    border-bottom: none !important;
+    
+    &:hover {
+      transform: translateX(2px);
+      background-color: transparent !important;
+    }
+  }
+  
+  // 第一级标题加粗
+  & > nav > ul > li > a {
+    font-weight: 600;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+    
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+

@@ -26,7 +26,9 @@ Syntax:
 ```
 
 You can also use some HTML in the text:
-{{ note(header="Note!", body="<h1>This blog assumes basic terminal maturity</h1>") }}
+{{< note header="Note!" >}}
+<h1>This blog assumes basic terminal maturity</h1>
+{{< /note >}}
 
 
 Literal shortcode:
@@ -38,7 +40,7 @@ Pretty cool, right?
 
 Finally, you can do something like this (hopefully):
 
-{% note(clickable=true, header="Quiz!") %}
+{{< note clickable=true header="Quiz!" >}}
 
 # Hello this is markdown inside a note shortcode
 
@@ -50,7 +52,7 @@ fn main() {
 
 We can't call another shortcode inside a shortcode, but this is good enough.
 
-{% end %}
+{{< /note >}}
 
 Here is the raw markdown:
 
@@ -71,7 +73,9 @@ We can't call another shortcode inside a shortcode, but this is good enough.
 ```
 
 Finally, we have center
-{{ note(center=true, header="Centered Text", body="This is centered text") }}
+{{< note center=true header="Centered Text" >}}
+This is centered text
+{{< /note >}}
 
 ```markdown
 {{/* note(center=true, header="Centered Text", body="This is centered text") */}}

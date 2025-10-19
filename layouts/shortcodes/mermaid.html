@@ -1,11 +1,38 @@
 {{/* layouts/shortcodes/mermaid.html */}}
-<script src="{{ "js/mermaid.js" | relURL }}"></script>
+{{- if not (.Page.Scratch.Get "mermaid") -}}
+{{- $mermaidJS := resources.Get "js/mermaid.js" -}}
+{{- if $mermaidJS -}}
+<script src="{{ $mermaidJS.RelPermalink }}"></script>
+{{- else -}}
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+{{- end -}}
+<script>
+  // 检测当前主题
+  const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'default';
+  
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: theme,
+    themeVariables: {
+      primaryColor: theme === 'dark' ? '#BD93F9' : '#FF8C00',
+      primaryTextColor: theme === 'dark' ? '#fff' : '#000',
+      primaryBorderColor: theme === 'dark' ? '#44475A' : '#ddd',
+      lineColor: theme === 'dark' ? '#fff' : '#333',
+      secondaryColor: theme === 'dark' ? '#44475A' : '#f4f4f4',
+      tertiaryColor: theme === 'dark' ? '#282A36' : '#fff',
+      fontSize: '18px'
+    },
+    flowchart: {
+      padding: 20,
+      nodeSpacing: 80,
+      rankSpacing: 80
+    }
+  });
+</script>
+{{- .Page.Scratch.Set "mermaid" true -}}
+{{- end -}}
 
-<pre class="mermaid">
-  {{/*  在 Hugo 中，短代码文件的内容使用 {{ .Inner }} 来获取短代码的主体内容  */}}
-  {{/*  使用 | safe 确保内容被安全地输出为 HTML  */}}
-  {{ .Inner }}
-</pre>
+<pre class="mermaid">{{ .Inner | safeHTML }}</pre>
 
 
 {{/*  

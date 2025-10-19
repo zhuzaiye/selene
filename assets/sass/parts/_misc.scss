@@ -3,7 +3,7 @@
 }
 
 .draft-label {
-  color: var(--hover-color);
+  color: var(--hover-text);
   text-decoration: none;
   padding: 2px 4px;
   border-radius: 4px;
@@ -13,17 +13,19 @@
 
 ::-moz-selection {
   background: var(--primary-color);
-  color: var(--hover-color);
+  color: var(--hover-text);
   text-shadow: none;
 }
 
 ::selection {
   background: var(--primary-color);
-  color: var(--hover-color);
+  color: var(--hover-text);
 }
 
 p {
-  line-height: 1.5;
+  line-height: 1.65;
+  margin-bottom: 1em;
+  font-family: var(--text-font);
 }
 
 hr {
@@ -37,6 +39,9 @@ blockquote {
   color: var(--text-1);
   margin: 0;
   padding-left: 1em;
+  font-family: var(--text-font);
+  font-style: italic;
+  line-height: 1.65;
 }
 
 a {
@@ -45,11 +50,11 @@ a {
   border-bottom: 3px solid var(--primary-color);
   color: inherit;
   text-decoration: none;
+  transition: all 0.2s ease;
 }
 
 a:hover {
-  background-color: var(--primary-color);
-  color: var(--hover-color);
+  color: var(--primary-color);
 }
 
 time {
@@ -67,8 +72,9 @@ time {
   margin-bottom: 30px;
 }
 
+/* Post list header styles - 只针对列表页 */
 @media all and (max-width: 640px) {
-  .post-header {
+  .list-item .post-header {
     display: grid;
     grid-template-rows: auto 1fr;
 
@@ -83,9 +89,9 @@ time {
   }
 }
 
-/* Post list */
+/* Post list - 只针对列表页 */
 @media all and (min-width: 640px) {
-  .post-header {
+  .list-item .post-header {
     display: grid;
     gap: 1rem;
     grid-row-gap: 1.5rem;
@@ -108,5 +114,126 @@ time {
 
   &:hover {
     background-color: transparent;
+  }
+}
+
+/* Note shortcode styles */
+.note-container {
+  margin: 1.5em 0;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.note-header {
+  background-color: var(--bg-1);
+  padding: 0.8em 1em;
+  font-weight: 600;
+  color: var(--text-0);
+}
+
+.note-toggle {
+  width: 100%;
+  background-color: var(--bg-1);
+  border: none;
+  padding: 0.8em 1em;
+  font-weight: 600;
+  color: var(--text-0);
+  cursor: pointer;
+  text-align: left;
+  font-size: inherit;
+  font-family: inherit;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.note-icon {
+  display: flex;
+  align-items: center;
+  
+  &::before {
+    content: "ℹ️";
+    margin-right: 0.5em;
+  }
+}
+
+.note-center {
+  text-align: center;
+}
+
+/* Note content base styles */
+.note-content {
+  padding: 1em;
+  border-top: 1px solid var(--border-color);
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Light mode - 使用多种选择器确保优先级 */
+html.light .post-content .note-container .note-content,
+html.light .note-container .note-content,
+html.light .note-content,
+.light .note-content {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+
+  * {
+    color: #000000 !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #000000 !important;
+    font-weight: 600;
+  }
+
+  p, li, span, div, strong, em, a {
+    color: #000000 !important;
+  }
+
+  code:not(pre code) {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    color: #000000 !important;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+  }
+
+  pre {
+    background-color: #282A36 !important;
+    margin: 1em 0;
+    padding: 1em;
+    border-radius: 5px;
+    overflow-x: auto;
+    
+    code {
+      background-color: transparent !important;
+      color: #F8F8F2 !important;
+      padding: 0;
+    }
+  }
+}
+
+/* 专门覆盖post-content中的note样式 */
+.post-content .note-content {
+  background-color: inherit;
+}
+
+html.light .post-content .note-content {
+  background-color: #ffffff !important;
+}
+
+/* Dark mode */
+html.dark .note-container .note-content,
+html.dark .note-content {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.87);
+
+  h1, h2, h3, h4, h5, h6,
+  p, li, span, div {
+    color: rgba(255, 255, 255, 0.87);
   }
 }

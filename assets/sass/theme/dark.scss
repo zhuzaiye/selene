@@ -1,6 +1,7 @@
 :root.dark {
   --text-0: rgba(255, 255, 255, 87%);
   --text-1: rgba(255, 255, 255, 60%);
+  --text-2: rgba(255, 255, 255, 40%);
 
   --bg-0: #282A36;
   --bg-1: #44475A;
@@ -8,8 +9,11 @@
   --bg-code: rgba(0, 0, 0, 10%);
 
   --primary-color: #BD93F9;
-  --hover-color: white;
+  --accent: #BD93F9;
+  --hover-color: #1a1a1a;
+  --hover-text: #ffffff;
 
+  --border-color: rgba(255, 255, 255, 0.1);
   --table-bg: rgba(0, 0, 0, 10%);
 
   .social>img {

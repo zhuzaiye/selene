@@ -1,0 +1,15 @@
+{{ define "main" }}
+<div class="home-content">
+    <h1 class="home-title">{{ .Title }}</h1>
+    
+    {{ with .Description }}
+    <p class="home-description">{{ . }}</p>
+    {{ end }}
+    
+    {{ with .Content }}
+    <div class="home-content-body">
+        {{ . }}
+    </div>
+    {{ end }}
+</div>
+{{ end }}

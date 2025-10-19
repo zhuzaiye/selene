@@ -1,12 +1,11 @@
-{{/*  header template  */}}
+{{/* _partials/header.html - 安全版，适配 assets/ */}}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{/*  设置基础URL  */}}
     <meta name="base" content="{{ .Site.BaseURL }}">
 
-    {{/*  检查是否存在自定义的meta数据  */}}
+    {{/* 自定义 meta */}}
     {{ with .Params.meta }}
         {{ range . }}
             <meta
@@ -33,17 +32,7 @@
             <meta property="og:title" content="{{ .Site.Title | default "Home" }}" />
         {{ end }}
     {{ else }}
-        <title>
-            {{- if .Title -}}
-                {{ .Title }}
-            {{- else if .Section -}}
-                {{ .Section }}
-            {{- else if .Site.Title -}}
-                {{ .Site.Title }}
-            {{- else -}}
-                Post
-            {{- end -}}
-        </title>
+        <title>{{ if .Title }}{{ .Title }}{{ else if .Section }}{{ .Section }}{{ else if .Site.Title }}{{ .Site.Title }}{{ else }}Post{{ end }}</title>
         {{ if not ($.Scratch.Get "page_has_og_title") }}
             <meta property="og:title" content="{{ if .Title }}{{ .Title }}{{ else if .Site.Title }}{{ .Site.Title }}{{ else }}Post{{ end }}" />
         {{ end }}
@@ -65,41 +54,58 @@
         {{ end }}
     {{ end }}
 
+    {{/* favicon */}}
     {{ with .Site.Params.favicon }}
-        <link rel="icon" type="image/png" href="{{ . | relURL }}" />
+        {{ with resources.Get . }}
+            {{ $favicon := . | fingerprint }}
+            <link rel="icon" type="image/png" href="{{ $favicon.Permalink }}" />
+        {{ else }}
+            {{ warnf "Favicon not found: %s" . }}
+        {{ end }}
     {{ end }}
 
+    {{/* CDN fonts */}}
     {{ if .Site.Params.use_cdn }}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/space-grotesk@4.5.8/index.min.css">
     {{ end }}
 
+    {{/* Analytics */}}
     {{ with .Site.Params.analytics }}
         {{ with .umami.website_id }}
-            <script defer src="/js/imamu.js" data-website-id="{{ . }}" data-host-url="{{ $.Site.Params.analytics.umami.host_url | default "https://api-gateway.umami.dev/" }}"></script>
+            {{ with resources.Get "js/imamu.js" }}
+                {{ $umami := . | minify | fingerprint }}
+                <script defer src="{{ $umami.Permalink }}"
+                        data-website-id="{{ . }}"
+                        data-host-url="{{ $.Site.Params.analytics.umami.host_url | default "https://api-gateway.umami.dev/" }}"></script>
+            {{ else }}
+                {{ warnf "JS file not found: js/imamu.js" }}
+            {{ end }}
         {{ end }}
         {{ with .goatcounter.user }}
-            <script data-goatcounter="https://{{ . }}.{{ $.Site.Params.analytics.goatcounter.host | default "goatcounter.com" }}/count"
-                    async
-                    src="{{ "js/count.js" | relURL }}"></script>
-            <noscript>
-                <img src="https://{{ . }}.{{ $.Site.Params.analytics.goatcounter.host | default "goatcounter.com" }}//count?p={{ $current_path }}&t={{ $.Title | default $.Site.Title }}">
-            </noscript>
+            {{ with resources.Get "js/count.js" }}
+                {{ $goatcounter := . | minify | fingerprint }}
+                <script data-goatcounter="https://{{ . }}.{{ $.Site.Params.analytics.goatcounter.host | default "goatcounter.com" }}/count"
+                        async
+                        src="{{ $goatcounter.Permalink }}"></script>
+                <noscript>
+                    <img src="https://{{ . }}.{{ $.Site.Params.analytics.goatcounter.host | default "goatcounter.com" }}/count?p={{ $current_path }}&t={{ $.Title | default $.Site.Title }}">
+                </noscript>
+            {{ else }}
+                {{ warnf "JS file not found: js/count.js" }}
+            {{ end }}
         {{ end }}
     {{ end }}
 
-    {{ if .Site.Params.fancy_code }}
-        <script src="{{ "js/codeblock.js" | relURL }}"></script>
+    {{/* 主JS文件 */}}
+    {{ with resources.Get "js/main.min.js" }}
+        {{ $main_js := . | fingerprint }}
+        <script src="{{ $main_js.Permalink }}" integrity="{{ $main_js.Data.Integrity }}" defer></script>
+    {{ else }}
+        {{ warnf "JS file not found: js/main.min.js" }}
     {{ end }}
 
-    {{ if .Site.Params.toc }}
-        <script src="{{ "js/toc.js" | relURL }}"></script>
-    {{ end }}
-
-    {{ if .Site.Params.dynamic_note }}
-        <script src="{{ "js/note.js" | relURL }}"></script>
-    {{ end }}
-
+    {{/* MathJax */}}
     {{ if .Site.Params.mathjax }}
         {{ if .Site.Params.mathjax_dollar_inline_enable }}
             <script>
@@ -115,54 +121,61 @@
 
     <link rel="alternate" type="application/atom+xml" title="{{ .Site.Title }}" href="{{ "index.xml" | relURL }}">
 
+    {{/* 主题 CSS */}}
     {{ $theme := .Site.Params.theme | default "toggle" }}
+    {{ $light := resources.Get "sass/theme/light.scss" | toCSS | minify | fingerprint }}
+    {{ $dark := resources.Get "sass/theme/dark.scss" | toCSS | minify | fingerprint }}
+
     {{ if eq $theme "dark" }}
-        {{ $dark := resources.Get "sass/theme/dark.scss" | toCSS | minify | fingerprint }}
         <link rel="stylesheet" href="{{ $dark.RelPermalink }}" />
     {{ else if eq $theme "light" }}
-        {{ $light := resources.Get "sass/theme/light.scss" | toCSS | minify | fingerprint }}
         <link rel="stylesheet" href="{{ $light.RelPermalink }}" />
     {{ else if eq $theme "auto" }}
-        {{ $light := resources.Get "sass/theme/light.scss" | toCSS | minify | fingerprint }}
-        {{ $dark := resources.Get "sass/theme/dark.scss" | toCSS | minify | fingerprint }}
         <link rel="stylesheet" href="{{ $light.RelPermalink }}" />
         <link rel="stylesheet" href="{{ $dark.RelPermalink }}" media="(prefers-color-scheme: dark)" />
     {{ else if eq $theme "toggle" }}
-        {{ $light := resources.Get "sass/theme/light.scss" | toCSS | minify | fingerprint }}
-        {{ $dark := resources.Get "sass/theme/dark.scss" | toCSS | minify | fingerprint }}
         <link rel="stylesheet" href="{{ $light.RelPermalink }}" />
         <link id="darkModeStyle" rel="stylesheet" href="{{ $dark.RelPermalink }}" />
     {{ end }}
 
-    {{ if or (eq $theme "auto") (eq $theme "toggle") }}
-        <script src="{{ "js/themetoggle.js" | relURL }}"></script>
-        {{ if eq $theme "auto" }}
-            <script>
-                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    setTheme("dark");
-                } else {
-                    setTheme("light");
-                }
-            </script>
-        {{ else }}
-            <script>setTheme(getSavedTheme());</script>
-        {{ end }}
+    {{/* 主题切换功能已包含在main.min.js中 */}}
+
+    {{/* 主 SCSS */}}
+    {{ with resources.Get "sass/main.scss" }}
+        {{ $main := . | toCSS | minify | fingerprint }}
+        <link rel="stylesheet" href="{{ $main.RelPermalink }}" />
+    {{ else }}
+        {{ warnf "SCSS file not found: sass/main.scss" }}
     {{ end }}
 
-    {{ $main := resources.Get "sass/main.scss" | toCSS | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $main.RelPermalink }}" />
-
+    {{/* 额外样式表 */}}
     {{ with .Site.Params.stylesheets }}
         {{ range . }}
-            <link rel="stylesheet" href="{{ . | relURL }}">
+            {{ with resources.Get . }}
+                {{ $css := . | toCSS | minify | fingerprint }}
+                <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+            {{ else }}
+                {{ warnf "CSS file not found: %s" . }}
+            {{ end }}
         {{ end }}
     {{ end }}
 
+    {{/* 搜索索引 JS */}}
     {{ if .Site.Params.build_search_index }}
         {{ $search_index_format := .Site.Params.search_index_format | default "elasticlunr_json" }}
         {{ if eq $search_index_format "elasticlunr_javascript" }}
-            <script defer src="{{ printf "search_index.%s.js" .Site.Language.Lang | relURL }}"></script>
+            {{ with resources.Get (printf "search_index.%s.js" .Site.Language.Lang) }}
+                {{ $search_index_js := . | minify | fingerprint }}
+                <script defer src="{{ $search_index_js.Permalink }}"></script>
+            {{ else }}
+                {{ warnf "Search index JS not found: search_index.%s.js" .Site.Language.Lang }}
+            {{ end }}
         {{ end }}
-        <script defer src="{{ "js/searchElasticlunr.min.js" | relURL }}"></script>
+        {{ with resources.Get "js/searchElasticlunr.min.js" }}
+            {{ $search_elasticlunr := . | minify | fingerprint }}
+            <script defer src="{{ $search_elasticlunr.Permalink }}"></script>
+        {{ else }}
+            {{ warnf "JS file not found: js/searchElasticlunr.min.js" }}
+        {{ end }}
     {{ end }}
 </head>
