@@ -1,6 +1,6 @@
 base_url = "http://localhost:1313/"
 title = "hzzhu"
-description = "appolo power by hugo."
+description = "selene power by hugo."
 build_search_index = true
 generate_feeds = true
 compile_sass = true
