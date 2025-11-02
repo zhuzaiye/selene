@@ -22,7 +22,7 @@
 header {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   padding: 1em 0;
@@ -31,6 +31,7 @@ header {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  overflow: visible;
 }
 
 header .main {
@@ -67,12 +68,15 @@ nav {
   gap: 1rem;
   font-family: var(--text-font);
   font-size: 1.05rem;
+  min-width: 0;
+  flex-shrink: 0;
   
   a {
     color: var(--text-1);
     text-decoration: none;
     transition: color 0.2s ease;
     font-weight: 500;
+    white-space: nowrap;
     
     &:hover {
       color: var(--primary-color);
