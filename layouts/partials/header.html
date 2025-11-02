@@ -105,6 +105,16 @@
         {{ warnf "JS file not found: js/main.min.js" }}
     {{ end }}
 
+    {{/* 笔记功能 JS - 仅在笔记页面加载 */}}
+    {{ if eq .Section "notes" }}
+        {{ with resources.Get "js/notes.js" }}
+            {{ $notes_js := . | minify | fingerprint }}
+            <script src="{{ $notes_js.Permalink }}" integrity="{{ $notes_js.Data.Integrity }}"></script>
+        {{ else }}
+            {{ warnf "JS file not found: js/notes.js" }}
+        {{ end }}
+    {{ end }}
+
     {{/* MathJax */}}
     {{ if .Site.Params.mathjax }}
         {{ if .Site.Params.mathjax_dollar_inline_enable }}

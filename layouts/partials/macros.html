@@ -122,9 +122,9 @@
     {{ range . }}
     <div class="card">
         {{ if .Params.local_image }}
-        <img class="card-image" alt="{{ .Params.extra.local_image }}" src="{{ .Params.extra.local_image | relURL }}" />
+        <img class="card-image" alt="{{ .Title }}" src="{{ .Params.local_image | relURL }}" />
         {{ else if .Params.remote_image }}
-        <img class="card-image" alt="{{ .Params.extra.remote_image }}" src="{{ .Params.extra.remote_image }}" />
+        <img class="card-image" alt="{{ .Title }}" src="{{ .Params.remote_image }}" />
         {{ else }}
         <div class="card-image-placeholder"></div>
         {{ end }}

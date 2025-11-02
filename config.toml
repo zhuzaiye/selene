@@ -3,23 +3,18 @@ title = "selene"
 description = "selene power by hugo."
 languageCode = "en-us"
 
-# 启用标签分类
-[taxonomies]
-  tag = "tags"
-
 [markup]
   [markup.highlight]
     style = "dracula"
   [markup.goldmark.renderer]
-    unsafe = true  # 允许在 Markdown 中使用原始 HTML
+    unsafe = true  # # Allow raw HTML in Markdown
 
 [params]
-  # 主题设置
   theme = "toggle"              # light, dark, auto, toggle
-  toc = true                    # 启用目录
-  mathjax = true                # 启用数学公式
+  toc = true                    # enable table of contents
+  mathjax = true                # enable mathjax
   
-  # 菜单配置
+  # Theme Settings
   [[params.menu]]
     name = "/posts"
     url = "/posts"
@@ -32,21 +27,32 @@ languageCode = "en-us"
     name = "/about"
     url = "/about"
     weight = 3
+  [[params.menu]]
+    name = "/notes"
+    url = "/notes"
+    weight = 4
   
-  # 社交链接
+  # menu configuration
   [[params.social]]
     name = "github"
-    url = "https://github.com/zhuzaiye/"
+    url = ""
     icon = "github"
   [[params.social]]
     name = "email"
-    url = "mailto:hzzhu92@gmail.com"
+    url = "mailto:"
     icon = "email"
   [[params.social]]
     name = "twitter"
-    url = "https://twitter.com/pigzhu11"
+    url = ""
     icon = "twitter"
   [[params.social]]
     name = "rss"
     url = "/index.xml"
     icon = "rss"
+
+  # gitalk
+  [params.gitalk]           
+  owner = ""             
+  repo = ""              
+  clientId = ""           
+  clientSecret = ""

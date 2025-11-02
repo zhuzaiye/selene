@@ -1,0 +1,41 @@
+{{ define "main" }}
+<div class="notes-container">
+    <h1 class="notes-title">Notes</h1>
+    
+    <div class="notes-actions">
+        <button id="new-note-btn" class="btn btn-primary">New Note</button>
+        <button id="export-all-btn" class="btn btn-export">Export All</button>
+        <button id="import-btn" class="btn btn-import">Import Notes</button>
+        <input type="file" id="import-file" accept=".md,.json" style="display: none;">
+        <button id="clear-all-btn" class="btn btn-secondary">Clear All</button>
+        <input type="search" id="search-notes" placeholder="Search Notes..." class="search-input">
+    </div>
+
+    <div id="note-editor" class="note-editor hidden">
+        <div class="editor-header">
+            <input type="text" id="note-title" placeholder="Title" class="note-title-input">
+            <div class="editor-actions">
+                <button id="save-note-btn" class="btn btn-save">Save</button>
+                <button id="cancel-note-btn" class="btn btn-cancel">Cancel</button>
+            </div>
+        </div>
+        <textarea id="note-content" placeholder="Write your notes here..." class="note-content-input"></textarea>
+        <div class="note-meta">
+            <span id="note-date" class="note-date"></span>
+            <div class="note-actions">
+                <button id="export-note-btn" class="btn btn-export-small hidden">Export</button>
+                <button id="delete-note-btn" class="btn btn-delete hidden">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notes-list" class="notes-list">
+        <!-- 笔记列表将在这里动态生成 -->
+    </div>
+
+    <div id="empty-state" class="empty-state hidden">
+        <p>No notes yet, click "New Note" to start recording!</p>
+    </div>
+</div>
+{{ end }}
+
