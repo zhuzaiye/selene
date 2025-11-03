@@ -726,11 +726,21 @@ ${note.content}`;
     }
 }
 
-// 当页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', () => {
+// 初始化函数
+function initNotesManager() {
     // 只在笔记页面初始化
     if (document.getElementById('notes-list')) {
         new NotesManager();
     }
-});
+}
+
+// 当页面加载完成后初始化
+// 支持两种情况：1. DOM 已加载完成；2. 等待 DOMContentLoaded
+if (document.readyState === 'loading') {
+    // DOM 还在加载中，等待 DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', initNotesManager);
+} else {
+    // DOM 已经加载完成，直接初始化
+    initNotesManager();
+}
 

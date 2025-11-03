@@ -58,7 +58,7 @@
     {{ with .Site.Params.favicon }}
         {{ with resources.Get . }}
             {{ $favicon := . | fingerprint }}
-            <link rel="icon" type="image/png" href="{{ $favicon.Permalink }}" />
+            <link rel="icon" type="image/png" href="{{ $favicon.RelPermalink }}" />
         {{ else }}
             {{ warnf "Favicon not found: %s" . }}
         {{ end }}
@@ -75,7 +75,7 @@
         {{ with .umami.website_id }}
             {{ with resources.Get "js/imamu.js" }}
                 {{ $umami := . | minify | fingerprint }}
-                <script defer src="{{ $umami.Permalink }}"
+                <script defer src="{{ $umami.RelPermalink }}"
                         data-website-id="{{ . }}"
                         data-host-url="{{ $.Site.Params.analytics.umami.host_url | default "https://api-gateway.umami.dev/" }}"></script>
             {{ else }}
@@ -87,7 +87,7 @@
                 {{ $goatcounter := . | minify | fingerprint }}
                 <script data-goatcounter="https://{{ . }}.{{ $.Site.Params.analytics.goatcounter.host | default "goatcounter.com" }}/count"
                         async
-                        src="{{ $goatcounter.Permalink }}"></script>
+                        src="{{ $goatcounter.RelPermalink }}"></script>
                 <noscript>
                     <img src="https://{{ . }}.{{ $.Site.Params.analytics.goatcounter.host | default "goatcounter.com" }}/count?p={{ $current_path }}&t={{ $.Title | default $.Site.Title }}">
                 </noscript>
@@ -100,7 +100,7 @@
     {{/* 主JS文件 */}}
     {{ with resources.Get "js/main.min.js" }}
         {{ $main_js := . | fingerprint }}
-        <script src="{{ $main_js.Permalink }}" integrity="{{ $main_js.Data.Integrity }}" defer></script>
+        <script src="{{ $main_js.RelPermalink }}" defer></script>
     {{ else }}
         {{ warnf "JS file not found: js/main.min.js" }}
     {{ end }}
@@ -109,7 +109,7 @@
     {{ if eq .Section "notes" }}
         {{ with resources.Get "js/notes.js" }}
             {{ $notes_js := . | minify | fingerprint }}
-            <script src="{{ $notes_js.Permalink }}" integrity="{{ $notes_js.Data.Integrity }}"></script>
+            <script src="{{ $notes_js.RelPermalink }}" defer></script>
         {{ else }}
             {{ warnf "JS file not found: js/notes.js" }}
         {{ end }}
@@ -176,14 +176,14 @@
         {{ if eq $search_index_format "elasticlunr_javascript" }}
             {{ with resources.Get (printf "search_index.%s.js" .Site.Language.Lang) }}
                 {{ $search_index_js := . | minify | fingerprint }}
-                <script defer src="{{ $search_index_js.Permalink }}"></script>
+                <script defer src="{{ $search_index_js.RelPermalink }}"></script>
             {{ else }}
                 {{ warnf "Search index JS not found: search_index.%s.js" .Site.Language.Lang }}
             {{ end }}
         {{ end }}
         {{ with resources.Get "js/searchElasticlunr.min.js" }}
             {{ $search_elasticlunr := . | minify | fingerprint }}
-            <script defer src="{{ $search_elasticlunr.Permalink }}"></script>
+            <script defer src="{{ $search_elasticlunr.RelPermalink }}"></script>
         {{ else }}
             {{ warnf "JS file not found: js/searchElasticlunr.min.js" }}
         {{ end }}

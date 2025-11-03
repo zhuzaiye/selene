@@ -32,6 +32,10 @@ header {
   max-width: 100%;
   box-sizing: border-box;
   overflow: visible;
+  
+  @media (min-width: 769px) {
+    flex-wrap: nowrap;
+  }
 }
 
 header .main {
@@ -45,6 +49,7 @@ header .main {
   font-family: var(--header-font);
   font-weight: 600;
   letter-spacing: -0.01em;
+  flex: 0 1 auto;
 
   /* Otherwise header and menu is too close on small screens*/
   margin-bottom: 0;
@@ -68,8 +73,8 @@ nav {
   gap: 1rem;
   font-family: var(--text-font);
   font-size: 1.05rem;
-  min-width: 0;
-  flex-shrink: 0;
+  flex: 0 1 auto;
+  min-width: fit-content;
   
   a {
     color: var(--text-1);
@@ -139,6 +144,9 @@ nav {
 
 #dark-mode-toggle {
   cursor: pointer;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
   
   img {
     width: 20px;
@@ -151,13 +159,7 @@ nav {
     }
   }
   
-  #sun-icon {
-    display: none;
-  }
-  
-  #moon-icon {
-    display: none;
-  }
+  // 图标显示由 JavaScript 控制，不在这里设置 display: none
 }
 
 h1,
