@@ -1,0 +1,20 @@
+{{ define "cards" }}
+    {{ $section := . }}
+    {{ with .Params.section_path }}
+        {{ $section = site.GetPage . }}
+    {{ end }}
+
+    {{ template "page_header" $section.Title }}
+
+    <main>
+        {{ $show_pages := $section.Pages }}
+        {{ $paginator := .Paginate $section.Pages }}
+        {{ if $paginator }}
+            {{ $show_pages = $paginator.Pages }}
+        {{ end }}
+
+        {{ template "cards_posts" $show_pages }}
+    </main>
+
+    {{ partial "pagination" . }}
+{{ end }}

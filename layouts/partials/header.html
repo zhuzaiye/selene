@@ -1,0 +1,195 @@
+{{/* _partials/header.html - 安全版，适配 assets/ */}}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="{{ .Site.BaseURL }}">
+
+    {{/* 自定义 meta */}}
+    {{ with .Params.meta }}
+        {{ range . }}
+            <meta
+                {{- range $key, $value := . -}}
+                    {{- if and (eq $key "property") (eq $value "og:title") -}}
+                        {{- $.Scratch.Set "page_has_og_title" true -}}
+                    {{- end -}}
+                    {{- if and (eq $key "property") (eq $value "og:description") -}}
+                        {{- $.Scratch.Set "page_has_og_description" true -}}
+                    {{- end -}}
+                    {{- if and (eq $key "name") (eq $value "description") -}}
+                        {{- $.Scratch.Set "page_has_description" true -}}
+                    {{- end -}}
+                    {{ $key }}="{{ $value }}"
+                {{- end -}}
+            />
+        {{ end }}
+    {{ end }}
+
+    {{ $current_path := .RelPermalink | default "/" }}
+    {{ if eq $current_path "/" }}
+        <title>{{ .Site.Title | default "Home" }}</title>
+        {{ if not ($.Scratch.Get "page_has_og_title") }}
+            <meta property="og:title" content="{{ .Site.Title | default "Home" }}" />
+        {{ end }}
+    {{ else }}
+        <title>{{ if .Title }}{{ .Title }}{{ else if .Section }}{{ .Section }}{{ else if .Site.Title }}{{ .Site.Title }}{{ else }}Post{{ end }}</title>
+        {{ if not ($.Scratch.Get "page_has_og_title") }}
+            <meta property="og:title" content="{{ if .Title }}{{ .Title }}{{ else if .Site.Title }}{{ .Site.Title }}{{ else }}Post{{ end }}" />
+        {{ end }}
+    {{ end }}
+
+    {{ if not ($.Scratch.Get "page_has_og_description") }}
+        {{ if .Description }}
+            <meta property="og:description" content="{{ .Description }}" />
+        {{ else if .Site.Params.description }}
+            <meta property="og:description" content="{{ .Site.Params.description }}" />
+        {{ end }}
+    {{ end }}
+
+    {{ if not ($.Scratch.Get "page_has_description") }}
+        {{ if .Description }}
+            <meta name="description" content="{{ .Description }}" />
+        {{ else if .Site.Params.description }}
+            <meta name="description" content="{{ .Site.Params.description }}" />
+        {{ end }}
+    {{ end }}
+
+    {{/* favicon */}}
+    {{ with .Site.Params.favicon }}
+        {{ with resources.Get . }}
+            {{ $favicon := . | fingerprint }}
+            <link rel="icon" type="image/png" href="{{ $favicon.RelPermalink }}" />
+        {{ else }}
+            {{ warnf "Favicon not found: %s" . }}
+        {{ end }}
+    {{ end }}
+
+    {{/* CDN fonts */}}
+    {{ if .Site.Params.use_cdn }}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/space-grotesk@4.5.8/index.min.css">
+    {{ end }}
+
+    {{/* Analytics */}}
+    {{ with .Site.Params.analytics }}
+        {{ with .umami.website_id }}
+            {{ with resources.Get "js/imamu.js" }}
+                {{ $umami := . | minify | fingerprint }}
+                <script defer src="{{ $umami.RelPermalink }}"
+                        data-website-id="{{ . }}"
+                        data-host-url="{{ $.Site.Params.analytics.umami.host_url | default "https://api-gateway.umami.dev/" }}"></script>
+            {{ else }}
+                {{ warnf "JS file not found: js/imamu.js" }}
+            {{ end }}
+        {{ end }}
+        {{ with .goatcounter.user }}
+            {{ with resources.Get "js/count.js" }}
+                {{ $goatcounter := . | minify | fingerprint }}
+                <script data-goatcounter="https://{{ . }}.{{ $.Site.Params.analytics.goatcounter.host | default "goatcounter.com" }}/count"
+                        async
+                        src="{{ $goatcounter.RelPermalink }}"></script>
+                <noscript>
+                    <img src="https://{{ . }}.{{ $.Site.Params.analytics.goatcounter.host | default "goatcounter.com" }}/count?p={{ $current_path }}&t={{ $.Title | default $.Site.Title }}">
+                </noscript>
+            {{ else }}
+                {{ warnf "JS file not found: js/count.js" }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+
+    {{/* 主JS文件 */}}
+    {{ with resources.Get "js/main.min.js" }}
+        {{ $main_js := . | fingerprint }}
+        <script src="{{ $main_js.RelPermalink }}" defer></script>
+    {{ else }}
+        {{ warnf "JS file not found: js/main.min.js" }}
+    {{ end }}
+
+    {{/* MathJax */}}
+    {{ if .Site.Params.mathjax }}
+        {{ if .Site.Params.mathjax_dollar_inline_enable }}
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        {{ end }}
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    {{ end }}
+
+    <link rel="alternate" type="application/atom+xml" title="{{ .Site.Title }}" href="{{ "index.xml" | relURL }}">
+
+    {{/* 主题 CSS */}}
+    {{ $theme := .Site.Params.theme | default "toggle" }}
+    {{ $light := resources.Get "sass/theme/light.scss" | toCSS | minify | fingerprint }}
+    {{ $dark := resources.Get "sass/theme/dark.scss" | toCSS | minify | fingerprint }}
+
+    {{ if eq $theme "toggle" }}
+        <script>
+        (function () {
+            var mode = localStorage.getItem("theme-storage");
+            if (!mode) {
+                mode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+                localStorage.setItem("theme-storage", mode);
+            }
+            document.documentElement.classList.remove("dark", "light");
+            document.documentElement.classList.add(mode === "dark" ? "dark" : "light");
+        })();
+        </script>
+    {{ end }}
+
+    {{ if eq $theme "dark" }}
+        <link rel="stylesheet" href="{{ $dark.RelPermalink }}" />
+    {{ else if eq $theme "light" }}
+        <link rel="stylesheet" href="{{ $light.RelPermalink }}" />
+    {{ else if eq $theme "auto" }}
+        <link rel="stylesheet" href="{{ $light.RelPermalink }}" />
+        <link rel="stylesheet" href="{{ $dark.RelPermalink }}" media="(prefers-color-scheme: dark)" />
+    {{ else if eq $theme "toggle" }}
+        <link rel="stylesheet" href="{{ $light.RelPermalink }}" />
+        <link id="darkModeStyle" rel="stylesheet" href="{{ $dark.RelPermalink }}" />
+    {{ end }}
+
+    {{/* 主题切换功能已包含在main.min.js中 */}}
+
+    {{/* 主 SCSS */}}
+    {{ with resources.Get "sass/main.scss" }}
+        {{ $main := . | toCSS | minify | fingerprint }}
+        <link rel="stylesheet" href="{{ $main.RelPermalink }}" />
+    {{ else }}
+        {{ warnf "SCSS file not found: sass/main.scss" }}
+    {{ end }}
+
+    {{/* 额外样式表 */}}
+    {{ with .Site.Params.stylesheets }}
+        {{ range . }}
+            {{ with resources.Get . }}
+                {{ $css := . | toCSS | minify | fingerprint }}
+                <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+            {{ else }}
+                {{ warnf "CSS file not found: %s" . }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+
+    {{/* 搜索索引 JS */}}
+    {{ if .Site.Params.build_search_index }}
+        {{ $search_index_format := .Site.Params.search_index_format | default "elasticlunr_json" }}
+        {{ if eq $search_index_format "elasticlunr_javascript" }}
+            {{ with resources.Get (printf "search_index.%s.js" .Site.Language.Lang) }}
+                {{ $search_index_js := . | minify | fingerprint }}
+                <script defer src="{{ $search_index_js.RelPermalink }}"></script>
+            {{ else }}
+                {{ warnf "Search index JS not found: search_index.%s.js" .Site.Language.Lang }}
+            {{ end }}
+        {{ end }}
+        {{ with resources.Get "js/searchElasticlunr.min.js" }}
+            {{ $search_elasticlunr := . | minify | fingerprint }}
+            <script defer src="{{ $search_elasticlunr.RelPermalink }}"></script>
+        {{ else }}
+            {{ warnf "JS file not found: js/searchElasticlunr.min.js" }}
+        {{ end }}
+    {{ end }}
+</head>

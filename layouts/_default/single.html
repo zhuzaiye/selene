@@ -1,0 +1,112 @@
+{{ define "main" }}
+{{ $isPost := eq .Section "posts" }}
+{{ $siteAuthor := .Site.Params.author | default .Site.Title }}
+{{ $siteDescription := .Site.Params.description }}
+
+<article class="post-single{{ if eq .Section "posts" }} wechat-post{{ end }}{{ with .Type }} page-type-{{ . }}{{ end }}">
+    <!-- Cover image for posts -->
+    {{ if and (eq .Section "posts") .Params.cover_image }}
+    <div class="wechat-cover">
+        <img src="{{ .Params.cover_image | relURL }}" alt="{{ .Title }}">
+    </div>
+    {{ end }}
+
+    <!-- Header -->
+    <header class="post-header{{ if eq .Section "posts" }} wechat-header{{ end }}">
+        <h1 class="post-title{{ if eq .Section "posts" }} wechat-title{{ end }}">{{ .Title }}</h1>
+        {{ if $isPost }}
+        <div class="post-meta wechat-meta">
+            {{ if .Date }}
+            <time class="wechat-date" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                {{ .Date.Format "January 2, 2006" }}
+            </time>
+            {{ end }}
+            {{ if and .Date $siteAuthor }}<span class="wechat-meta-separator">|</span>{{ end }}
+            {{ with $siteAuthor }}<span class="wechat-author">{{ . }}</span>{{ end }}
+        </div>
+        {{ else }}
+        <div class="post-meta">
+            {{ if .Date }}
+            <div class="post-date">
+                <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                    {{ .Date.Format "January 2, 2006" }}
+                </time>
+            </div>
+            {{ end }}
+            {{ with .Params.tags }}
+            <div class="post-tags">
+                {{ range . }}
+                <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" class="post-tag">#{{ . }}</a>
+                {{ end }}
+            </div>
+            {{ end }}
+            {{ if .Params.description }}
+            <div class="post-description">
+                {{ .Params.description }}
+            </div>
+            {{ end }}
+        </div>
+        {{ end }}
+    </header>
+
+    <!-- Article content -->
+    <div class="post-content">
+        {{ .Content }}
+    </div>
+
+</article>
+
+{{ if eq .Section "posts" }}
+<!-- Fixed bottom bar: author, actions, comment -->
+<div class="wechat-bottom-bar">
+    <div class="wechat-bottom-inner">
+        <div class="wechat-bottom-left">
+            {{ with .Site.Params.avatar }}
+            <div class="wechat-bottom-avatar">
+                <img src="{{ . | relURL }}" alt="avatar">
+            </div>
+            {{ end }}
+            <span class="wechat-bottom-name">{{ $siteAuthor }}</span>
+        </div>
+        <div class="wechat-bottom-actions">
+            <button class="wechat-bottom-btn" id="wechat-like" aria-label="赞">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/>
+                    <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                </svg>
+                <span class="wechat-bottom-count" id="like-count">0</span>
+            </button>
+            <button class="wechat-bottom-btn" id="wechat-share" aria-label="转发">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                    <polyline points="16 6 12 2 8 6"/>
+                    <line x1="12" y1="2" x2="12" y2="15"/>
+                </svg>
+            </button>
+            <button class="wechat-bottom-btn" id="wechat-comment-btn" aria-label="评论">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+{{ end }}
+
+{{ if and .TableOfContents (eq .Section "posts") }}
+<aside class="toc-sidebar">
+    <div class="toc-sticky">
+        {{ .TableOfContents }}
+    </div>
+</aside>
+{{ end }}
+
+{{ if $isPost }}
+{{ with resources.Get "js/wechat-actions.js" | minify | fingerprint }}
+<script src="{{ .RelPermalink }}"></script>
+{{ end }}
+{{ with resources.Get "js/toc.js" | minify | fingerprint }}
+<script src="{{ .RelPermalink }}"></script>
+{{ end }}
+{{ end }}
+{{ end }}

@@ -1,0 +1,48 @@
+{{/* layouts/shortcodes/mermaid.html */}}
+{{- if not (.Page.Scratch.Get "mermaid") -}}
+{{- $mermaidJS := resources.Get "js/mermaid.js" -}}
+{{- if $mermaidJS -}}
+<script src="{{ $mermaidJS.RelPermalink }}"></script>
+{{- else -}}
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+{{- end -}}
+<script>
+  // 检测当前主题
+  const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'default';
+  
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: theme,
+    themeVariables: {
+      primaryColor: theme === 'dark' ? '#f5f5f5' : '#111111',
+      primaryTextColor: theme === 'dark' ? '#fff' : '#000',
+      primaryBorderColor: theme === 'dark' ? '#2a2a2a' : '#e5e5e5',
+      lineColor: theme === 'dark' ? '#fff' : '#333',
+      secondaryColor: theme === 'dark' ? '#1d1d1d' : '#f4f4f4',
+      tertiaryColor: theme === 'dark' ? '#111111' : '#fff',
+      fontSize: '18px'
+    },
+    flowchart: {
+      padding: 20,
+      nodeSpacing: 80,
+      rankSpacing: 80
+    }
+  });
+</script>
+{{- .Page.Scratch.Set "mermaid" true -}}
+{{- end -}}
+
+<pre class="mermaid">{{ .Inner | safeHTML }}</pre>
+
+
+{{/*  
+  在markdown中使用Mermaid图标  
+
+  {{< mermaid >}}
+  graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+  {{< /mermaid >}}
+*/}}

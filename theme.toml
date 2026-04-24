@@ -1,0 +1,109 @@
+name = "selene"
+license = "MIT"
+licenselink = "https://github.com/zhuzaiye/selene/blob/master/LICENSE"
+description = "A clean, elegant Hugo theme with light/dark toggle, WeChat-style posts, and rich shortcodes"
+homepage = "https://github.com/zhuzaiye/selene"
+tags = ["blog", "minimal", "dark", "light", "responsive", "wechat", "search"]
+features = [
+  "light/dark theme toggle",
+  "WeChat-style post layout",
+  "table of contents",
+  "MathJax support",
+  "Mermaid diagrams",
+  "search (elasticlunr)",
+  "Gitalk comments",
+  "40+ social icons",
+  "custom fonts (JetBrains Mono, Space Grotesk, Zed)",
+  "responsive design",
+  "Umami / GoatCounter analytics",
+  "note shortcode",
+  "pagination",
+  "RSS/Atom feed",
+  "syntax highlighting (Dracula)",
+]
+min_version = "0.110.0"
+
+[author]
+  name = "hzzhu92"
+  homepage = "https://github.com/zhuzaiye"
+
+# ---- Example site config.toml ----
+#
+# baseURL = "https://example.com/"
+# title = "My Blog"
+# languageCode = "en-us"
+# paginate = 10
+# theme = "selene"
+#
+# [markup]
+#   [markup.highlight]
+#     style = "dracula"
+#     noClasses = false
+#   [markup.goldmark.renderer]
+#     unsafe = true
+#
+# [params]
+#   description = "My personal blog"
+#   avatar = "/imgs/avatar.png"
+#   theme = "toggle"           # light | dark | auto | toggle
+#   toc = true
+#   mathjax = true
+#   mathjax_dollar_inline_enable = true
+#   build_search_index = false # set true to enable elasticlunr search
+#   use_cdn = false            # set true to load fonts from CDN
+#
+#   # Navigation menu
+#   [[params.menu]]
+#     name = "/posts"
+#     url = "/posts"
+#     weight = 1
+#   [[params.menu]]
+#     name = "/projects"
+#     url = "/projects"
+#     weight = 2
+#   [[params.menu]]
+#     name = "/about"
+#     url = "/about"
+#     weight = 3
+#
+#   # Social links (icon names from static/icons/social/)
+#   [[params.social]]
+#     name = "github"
+#     url = "https://github.com/yourname"
+#     icon = "github"
+#   [[params.social]]
+#     name = "email"
+#     url = "mailto:you@example.com"
+#     icon = "email"
+#   [[params.social]]
+#     name = "rss"
+#     url = "/index.xml"
+#     icon = "rss"
+#
+#   # Gitalk comments (optional — remove to disable)
+#   [params.gitalk]
+#     owner = "your-github-username"
+#     repo = "your-repo"
+#     clientId = "your-client-id"
+#     clientSecret = "your-client-secret"
+#
+#   # Analytics (optional — remove to disable)
+#   [params.analytics]
+#     [params.analytics.umami]
+#       website_id = "your-website-id"
+#       host_url = "https://api-gateway.umami.dev/"
+#     [params.analytics.goatcounter]
+#       user = "your-goatcounter-user"
+#       host = "goatcounter.com"
+#
+# ---- Frontmatter example ----
+#
+# ---
+# title: "My Post Title"
+# date: 2024-01-01
+# draft: true
+# description: "A short description"
+# comment: true
+# cover_image: "/imgs/post-cover.svg"
+# tags: ["tag1", "tag2"]
+# ---

@@ -1,0 +1,38 @@
+{{ define "main" }}
+{{ $posts := site.GetPage "section" "posts" }}
+{{ if $posts }}
+    {{ template "page_header" $posts.Title }}
+
+    <main class="list">
+        {{ $show_pages := $posts.Pages }}
+        {{ $paginator := .Paginate $posts.Pages }}
+        {{ if $paginator }}
+            {{ $show_pages = $paginator.Pages }}
+        {{ end }}
+
+        {{ template "list_posts" $show_pages }}
+    </main>
+
+    {{ if .Paginator }}
+        <ul class="pagination">
+            {{ if .Paginator.HasPrev }}
+                <li class="page-item page-prev">
+                    <a href="{{ .Paginator.Prev.URL }}" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">← Prev</span>
+                    </a>
+                </li>
+            {{ end }}
+
+            {{ if .Paginator.HasNext }}
+                <li class="page-item page-next">
+                    <a href="{{ .Paginator.Next.URL }}" class="page-link" aria-label="Next">
+                        <span>Next →</span>
+                    </a>
+                </li>
+            {{ end }}
+        </ul>
+    {{ end }}
+{{ else }}
+    <p>No posts available.</p>
+{{ end }}
+{{ end }}

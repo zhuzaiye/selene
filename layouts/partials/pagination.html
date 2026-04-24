@@ -1,0 +1,47 @@
+{{ with .Paginator }}
+{{ $total := .TotalPages }}
+{{ $current := .PageNumber }}
+{{ $pagers := .Pagers }}
+{{ if gt $total 1 }}
+<ul class="pagination">
+    <li class="page-item{{ if not .HasPrev }} disabled{{ end }}">
+        <a href="{{ with .Prev }}{{ .URL }}{{ else }}#{{ end }}">‹ Prev</a>
+    </li>
+
+    {{- $start := sub $current 2 -}}
+    {{- if lt $start 1 }}{{ $start = 1 }}{{ end -}}
+    {{- $end := add $current 2 -}}
+    {{- if gt $end $total }}{{ $end = $total }}{{ end -}}
+
+    {{- if gt $start 1 -}}
+    <li class="page-item{{ if eq $current 1 }} active{{ end }}">
+        <a href="{{ (index $pagers 0).URL }}">1</a>
+    </li>
+    {{- end -}}
+
+    {{- if gt $start 2 -}}
+    <li class="page-item disabled"><span>…</span></li>
+    {{- end -}}
+
+    {{- range $i := seq $start $end -}}
+    <li class="page-item{{ if eq $i $current }} active{{ end }}">
+        <a href="{{ (index $pagers (sub $i 1)).URL }}">{{ $i }}</a>
+    </li>
+    {{- end -}}
+
+    {{- if lt $end (sub $total 1) -}}
+    <li class="page-item disabled"><span>…</span></li>
+    {{- end -}}
+
+    {{- if lt $end $total -}}
+    <li class="page-item{{ if eq $current $total }} active{{ end }}">
+        <a href="{{ (index $pagers (sub $total 1)).URL }}">{{ $total }}</a>
+    </li>
+    {{- end -}}
+
+    <li class="page-item{{ if not .HasNext }} disabled{{ end }}">
+        <a href="{{ with .Next }}{{ .URL }}{{ else }}#{{ end }}">Next ›</a>
+    </li>
+</ul>
+{{ end }}
+{{ end }}

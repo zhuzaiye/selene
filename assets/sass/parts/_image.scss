@@ -1,0 +1,93 @@
+/* About page: avatar and intro text side by side, same height */
+.page-type-about .about-intro {
+  display: flex;
+  align-items: stretch;
+  gap: 1.5em;
+  margin-bottom: 1rem;
+}
+
+/* Wrapper div stretches to match text height via flex align-items: stretch */
+.page-type-about .about-intro-img {
+  flex: 0 0 200px;
+  min-height: 100px;
+}
+
+/* Image fills the wrapper's stretched height */
+.page-type-about .about-intro-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 3px solid #ececec;
+  margin: 0;
+}
+
+.page-type-about .about-intro > div:last-child {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.page-type-about .about-intro p {
+  margin-bottom: 0.5em;
+}
+
+.page-type-about .about-intro p:last-child {
+  margin-bottom: 0;
+}
+
+/* Stack vertically on small screens */
+@media (max-width: 600px) {
+  .page-type-about .about-intro {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .page-type-about .about-intro-img {
+    flex: 0 0 auto;
+    width: 180px;
+    height: 180px;
+  }
+}
+
+/* Remove the old about float rules */
+.page-type-about .post-content h2:first-of-type {
+  clear: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+figure {
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 0;
+  max-width: 100%;
+}
+
+figure img {
+  max-height: 500px;
+}
+
+@media screen and (min-width: 600px) {
+  figure {
+    padding: 0 40px;
+  }
+}
+
+figure h4 {
+  font-size: 1rem;
+  margin: 0;
+  margin-bottom: 1em;
+}
+
+figure h4::before {
+  content: "↳ ";
+}
+
+svg {
+  max-height: 15px;
+}

@@ -1,0 +1,135 @@
+/* TOC侧边栏 - 固定在 content 右侧 */
+.toc-sidebar {
+  position: fixed;
+  left: calc(50% + var(--page-width) / 2 + 2rem);
+  top: 80px;
+  width: 280px;
+  max-height: calc(100vh - 120px);
+  z-index: 50;
+
+  @media only screen and (max-width: 1400px) {
+    display: none;
+  }
+}
+
+.toc-sticky {
+  width: 100%;
+  padding: 1rem;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: var(--bg-2, rgba(255, 255, 255, 0.2));
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--primary, rgba(255, 255, 255, 0.3));
+  }
+
+  // "Contents" header
+  &::before {
+    content: "Contents";
+    display: block;
+    font-family: var(--header-font);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-1);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  // Reset list styles
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  // Level 1 (top-level items)
+  & > nav > ul > li > a {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.35rem 0;
+    margin-top: 0.15rem;
+    color: var(--text-0);
+  }
+
+  // Level 2
+  & > nav > ul > li > ul > li > a {
+    display: block;
+    font-weight: 500;
+    font-size: 0.88rem;
+    padding: 0.2rem 0 0.2rem 1.2rem;
+    color: var(--text-1);
+  }
+
+  // Level 3
+  & > nav > ul > li > ul > li > ul > li > a {
+    display: block;
+    font-weight: 400;
+    font-size: 0.82rem;
+    padding: 0.15rem 0 0.15rem 2.4rem;
+    color: var(--text-2);
+  }
+
+  // All links base
+  a {
+    font-family: var(--text-font);
+    text-decoration: none;
+    border-bottom: none !important;
+    line-height: 1.5;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--primary-color, var(--text-0)) !important;
+      background-color: transparent !important;
+    }
+  }
+
+  // Selected highlight
+  li.selected > a {
+    color: var(--link-color) !important;
+    font-weight: 700 !important;
+  }
+
+  .parent > a {
+    color: var(--text-0) !important;
+    font-weight: 600 !important;
+  }
+
+  /* ===== Collapsible toggle ===== */
+  .toc-toggle {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-2);
+    cursor: pointer;
+    user-select: none;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 2px;
+    transition: background 0.15s, color 0.15s;
+
+    &:hover {
+      background: var(--bg-1);
+      color: var(--text-0);
+    }
+  }
+
+  // Collapsed state
+  li.toc-collapsed > ul {
+    display: none !important;
+  }
+}

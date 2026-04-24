@@ -1,0 +1,34 @@
+<div class="note-container">
+    {{ if .Get "clickable" | default false }}
+        <button class="note-toggle">
+            {{ if .Get "center" | default false }}
+                <div class="note-center">{{ .Get "header" | markdownify }}</div>
+            {{ else }}
+                <div class="note-icon">{{ .Get "header" | markdownify }}</div>
+            {{ end }}
+        </button>
+
+        {{ if .Get "hidden" | default false }}
+            <div class="note-content" style="display: none;"></div>
+        {{ else }}
+            <div class="note-content">{{ .Inner | markdownify}}</div>
+        {{ end }}
+    {{ else }}
+        <div class="note-header">
+            {{ if .Get "center" | default false }}
+                <div class="note-center">{{ .Get "header" | markdownify }}</div>
+            {{ else }}
+                <div class="note-icon">{{ .Get "header" | markdownify }}</div>
+            {{ end }}
+        </div>
+        <div class="note-content">{{ .Inner | markdownify}}</div>
+    {{ end }}
+</div>
+
+
+{{/*  
+    在markdown中使用
+    {{< note header="Note Title" clickable=true hidden=false center=true >}}
+    This is the content of the note.
+    {{< /note >}}
+*/}}

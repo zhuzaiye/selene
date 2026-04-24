@@ -1,0 +1,84 @@
+.code-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: var(--code-font);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03rem;
+  padding: 3px 10px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: #6272a4;
+  border-radius: 0 0 6px 0;
+  line-height: 1.4;
+  z-index: 5;
+  user-select: none;
+}
+
+code {
+  font-family: var(--code-font);
+  background-color: var(--bg-1);
+  padding: 0.1em 0.2em;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  font-size: 0.9em;
+}
+
+pre {
+  border: 1px solid var(--border-color);
+
+  line-height: 1.5;
+  overflow-x: auto;
+  padding: 2.2em 1em 2.2em 1em;
+  min-height: 72px;
+
+  font-family: var(--code-font);
+  font-size: 0.92em;
+  background-color: var(--bg-code);
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
+pre code {
+  background-color: transparent;
+  color: inherit;
+  font-size: 100%;
+  padding: 0;
+
+  // We only want a border around `code` and not `pre code` blocks.
+  border: 0;
+}
+
+span {
+  text-decoration: none !important;
+}
+
+
+.clipboard-button {
+  all: unset;
+  cursor: pointer;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #44475a;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #6272a4;
+  }
+}
+
+.clipboard-button svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  fill: #f8f8f2;
+}
