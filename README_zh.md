@@ -2,6 +2,8 @@
 
 Selene 是 Hugo 博客主题，提供深浅模式、文章目录、代码复制与折叠、项目页、Mermaid、MathJax 和可选的 Gitalk 评论。
 
+用例展示：[https://zhuzaiye.github.io](https://zhuzaiye.github.io)
+
 ## 环境要求
 
 - Hugo **0.158.0 或更新版本**，普通版即可，无需 Extended、Sass、Node.js 或 npm。
@@ -464,6 +466,13 @@ selene/
 评论位于 `parts/comments.css` 与 `js/comments.js`，代码交互位于 `js/codeblock.js`。
 原项目已有压缩版 `main.min.js`，模板直接加载它；修改 `main.js` 时需要同步压缩版本。
 独立加载的 `codeblock.js`、`comments.js`、`toc.js` 等由 Hugo 构建时压缩并生成指纹。
+
+## AI 辅助开发
+
+本项目初期开发有 Claude 参与，后续整理、改进和文档完善有 OpenAI Codex 参与。
+项目由维护者审核、测试和维护。
+
+## 许可证
 
 主题保留原有第三方资源及文件内声明，社交图标许可见
 [`static/icons/social/LICENSE`](static/icons/social/LICENSE)。

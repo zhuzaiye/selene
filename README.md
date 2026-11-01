@@ -2,7 +2,7 @@
   <h1>Selene</h1>
   <p>A simple Hugo blog theme.</p>
   <p>
-    <a href="README.md">English</a> ·
+    <a href="https://zhuzaiye.github.io">Live Demo</a> ·
     <a href="README_zh.md">简体中文</a> ·
     <a href="LICENSE">MIT License</a>
   </p>
@@ -539,6 +539,12 @@ The original project includes a minified `main.min.js`, which templates load
 directly. Update the minified version whenever you change `main.js`.
 Separately loaded files such as `codeblock.js`, `comments.js`, and `toc.js` are
 minified and fingerprinted by Hugo during the build.
+
+## AI-assisted development
+
+Claude assisted with the initial development of this project.
+OpenAI Codex assisted with subsequent refinements and documentation.
+The project is reviewed, tested, and maintained by its maintainer.
 
 ## License
 
