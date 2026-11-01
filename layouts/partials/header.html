@@ -105,6 +105,11 @@
         {{ warnf "JS file not found: js/main.min.js" }}
     {{ end }}
 
+    {{/* Code blocks: keep the interaction source separate from the main script. */}}
+    {{ with resources.Get "js/codeblock.js" | minify | fingerprint }}
+        <script src="{{ .RelPermalink }}" defer></script>
+    {{ end }}
+
     {{/* MathJax */}}
     {{ if .Site.Params.mathjax }}
         {{ if .Site.Params.mathjax_dollar_inline_enable }}
@@ -119,60 +124,9 @@
         <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     {{ end }}
 
-    <link rel="alternate" type="application/atom+xml" title="{{ .Site.Title }}" href="{{ "index.xml" | relURL }}">
+    <link rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" href="{{ "index.xml" | relURL }}">
 
-    {{/* 主题 CSS */}}
-    {{ $theme := .Site.Params.theme | default "toggle" }}
-    {{ $light := resources.Get "sass/theme/light.scss" | toCSS | minify | fingerprint }}
-    {{ $dark := resources.Get "sass/theme/dark.scss" | toCSS | minify | fingerprint }}
-
-    {{ if eq $theme "toggle" }}
-        <script>
-        (function () {
-            var mode = localStorage.getItem("theme-storage");
-            if (!mode) {
-                mode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-                localStorage.setItem("theme-storage", mode);
-            }
-            document.documentElement.classList.remove("dark", "light");
-            document.documentElement.classList.add(mode === "dark" ? "dark" : "light");
-        })();
-        </script>
-    {{ end }}
-
-    {{ if eq $theme "dark" }}
-        <link rel="stylesheet" href="{{ $dark.RelPermalink }}" />
-    {{ else if eq $theme "light" }}
-        <link rel="stylesheet" href="{{ $light.RelPermalink }}" />
-    {{ else if eq $theme "auto" }}
-        <link rel="stylesheet" href="{{ $light.RelPermalink }}" />
-        <link rel="stylesheet" href="{{ $dark.RelPermalink }}" media="(prefers-color-scheme: dark)" />
-    {{ else if eq $theme "toggle" }}
-        <link rel="stylesheet" href="{{ $light.RelPermalink }}" />
-        <link id="darkModeStyle" rel="stylesheet" href="{{ $dark.RelPermalink }}" />
-    {{ end }}
-
-    {{/* 主题切换功能已包含在main.min.js中 */}}
-
-    {{/* 主 SCSS */}}
-    {{ with resources.Get "sass/main.scss" }}
-        {{ $main := . | toCSS | minify | fingerprint }}
-        <link rel="stylesheet" href="{{ $main.RelPermalink }}" />
-    {{ else }}
-        {{ warnf "SCSS file not found: sass/main.scss" }}
-    {{ end }}
-
-    {{/* 额外样式表 */}}
-    {{ with .Site.Params.stylesheets }}
-        {{ range . }}
-            {{ with resources.Get . }}
-                {{ $css := . | toCSS | minify | fingerprint }}
-                <link rel="stylesheet" href="{{ $css.RelPermalink }}">
-            {{ else }}
-                {{ warnf "CSS file not found: %s" . }}
-            {{ end }}
-        {{ end }}
-    {{ end }}
+    {{ partial "styles.html" . }}
 
     {{/* 搜索索引 JS */}}
     {{ if .Site.Params.build_search_index }}

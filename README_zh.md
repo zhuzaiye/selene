@@ -1,276 +1,344 @@
-# Selene — 简洁优雅的 Hugo 主题
+# Selene 中文使用文档
 
-Selene 是一个为个人博客设计的极简 Hugo 主题，灵感来源于微信公众号排版风格，支持亮/暗主题切换、丰富的 shortcodes、内置搜索。
+Selene 是 Hugo 主题。主题包含模板、CSS、JavaScript、
+字体、图标与文章原型；个人文章、头像、文章配图、站点配置和构建产物不属于主题。
+`exampleSite/` 提供可独立运行的中文示例，不包含原博客的评论凭据。
 
-[效果预览](https://zhuzaiye.github.io)
+## 环境要求
 
-![theme preview](https://img.shields.io/badge/Hugo-%3E%3D0.110.0-blue) ![license](https://img.shields.io/badge/license-MIT-green)
+- Hugo **0.158.0 或更新版本**（示例配置使用 `locale`）。
+- 普通版 Hugo 即可；无需 Extended、Dart Sass、Node.js 或 npm 安装。
+- 浏览器需启用 JavaScript 才能使用目录交互、主题切换、代码复制和评论等功能。
 
-## 功能特性
+## 选择使用方式
 
-- **亮/暗主题切换** — 支持 `light`、`dark`、`auto`、`toggle` 四种模式，遵循系统 `prefers-color-scheme`
-- **微信公众号风格** — 封面图、作者栏、点赞/分享/评论按钮
-- **目录导航** — 文章页面粘性侧边栏目录
-- **MathJax** — LaTeX 数学公式渲染，支持行内 `$...$`
-- **Mermaid 图表** — 随主题自动适配明暗的图表渲染
-- **内置搜索** — 基于 elasticlunr.js 的全文搜索
-- **Gitalk 评论** — 基于 GitHub Issues 的评论系统
-- **40+ 社交图标** — GitHub、Twitter、RSS、邮箱等 SVG 图标
-- **自定义字体** — JetBrains Mono（代码）、Space Grotesk & Zed（正文/标题）
-- **响应式设计** — 适配移动端
-- **访问统计** — 支持 Umami 和 GoatCounter
-- **Note shortcode** — 可折叠的提示框
-- **分页导航** — 数字页码
-- **RSS/Atom** — 自动生成订阅源
-- **语法高亮** — 使用 Hugo Chroma 的 Dracula 配色方案
+`exampleSite/` 是用于演示和验证主题的示例站点，包含配置、示例文章、项目页和关于页；
+主题功能由仓库根目录的 `layouts/`、`assets/`、`static/` 和 `archetypes/` 提供。
+可以根据需要选择以下方式：
 
-## 主题结构
+| 方式 | 文件组织 | 适合场景 | 更新方式 |
+| --- | --- | --- | --- |
+| 可复用主题 | 自己的站点保存配置和内容，Selene 放在 `themes/selene/` | 已有 Hugo 站点，或希望独立更新主题 | 更新主题子模块 |
+| 完整博客模板 | 配置、`content/` 与主题模板、资源都放在仓库根目录 | 希望下载后直接写作和运行 | 使用 Git 合并上游更新并处理冲突，或手动同步文件 |
 
-```
-selene/
-├── theme.toml          # 主题元信息 + 示例配置
-├── README.md           # 完整文档
-├── archetypes/
-│   └── default.md
-├── assets/
-│   ├── js/             # 13 个 JS 文件 (主题切换、搜索、mermaid、toc 等)
-│   └── sass/
-│       ├── main.scss / fonts.scss
-│       ├── parts/      # 10 个 SCSS 部分文件
-│       └── theme/      # light.scss + dark.scss
-├── layouts/
-│   ├── _default/       # baseof, single, taxonomy
-│   ├── partials/       # header, nav, cards, comments, macros 等
-│   ├── shortcodes/     # mermaid, note
-│   ├── posts/ + projects/
-│   └── index, 404, robots.txt, sitemap.xml
-└── static/
-    ├── fonts/          # JetBrainsMono, SpaceGrotesk, Zed
-    └── icons/          # 40+ 社交图标 + sun/moon/search SVG
-```
+作为可复用主题发布时，保留 `exampleSite/` 方便预览和维护，示例内容不会自动成为用户站点的文章。
+作为自己的博客模板使用时，可以将示例配置和内容复制到根目录；完成后不再需要引用外部主题。
+下面分别说明操作步骤。
 
-### 抽取取舍
+## 安装到现有站点
 
-| 包含（主题通用资源）       | 排除（站点特定内容）            |
-| -------------------------- | ------------------------------- |
-| `layouts/` — 所有模板      | `content/` — 博客文章和页面     |
-| `assets/` — JS、SCSS       | `static/imgs/` — 文章配图、截图 |
-| `archetypes/` — 默认模板   | `config.toml` — 个人配置含密钥  |
-| `static/fonts/` — 字体文件 | `public/` — 构建输出            |
-| `static/icons/` — 主题图标 | `resources/` — Hugo 缓存        |
-
-`theme.toml` 中提供了完整的示例配置，替换占位符即可使用。
-
-## 快速开始
-
-### 方式一：Git Submodule
+在 Hugo 站点根目录执行：
 
 ```sh
-hugo new site my-blog
-cd my-blog
-git init
 git submodule add https://github.com/zhuzaiye/selene.git themes/selene
-echo "theme = 'selene'" >> hugo.toml
 ```
 
-### 方式二：Hugo Modules
-
-```sh
-hugo new site my-blog
-cd my-blog
-hugo mod init my-blog
-# 在 hugo.toml 中添加：
-#   theme = "github.com/zhuzaiye/selene"
-```
-
-### 方式三：直接拷贝
-
-```sh
-cp -r /path/to/selene my-blog/themes/selene
-echo "theme = 'selene'" >> my-blog/hugo.toml
-```
-
-## 构建
-
-如果需要在构建时指定站点的 base URL，可以使用下面的命令：
-
-```sh
-hugo -b <baseUrl>
-```
-
-## 配置
-
-将以下示例配置复制到你站点的 `hugo.toml`（或 `config.toml`）中，按需修改。
+也可直接将主题复制到 `themes/selene/`，目录中应直接包含 `theme.toml`、`layouts/` 等文件。
+在站点的 `hugo.toml` 或 `config.toml` 顶层启用主题：
 
 ```toml
-baseURL = "https://example.com/"
-title = "My Blog"
-languageCode = "en-us"
-paginate = 10
+baseURL = "https://example.org/"
+locale = "zh-CN"
 theme = "selene"
 
-[markup]
-  [markup.highlight]
-    style = "dracula"
-    noClasses = false
-  [markup.goldmark.renderer]
-    unsafe = true  # 允许 Markdown 中使用原始 HTML
+[pagination]
+  pagerSize = 10
+
+[markup.highlight]
+  noClasses = false
 
 [params]
-  description = "My personal blog"
-  avatar = "/imgs/avatar.png"    # 文章底部作者栏头像
-  theme = "toggle"               # light | dark | auto | toggle
-  toc = true                     # 启用文章目录
-  mathjax = true                 # 启用数学公式
-  mathjax_dollar_inline_enable = true
-  build_search_index = false     # 设为 true 启用 elasticlunr 搜索
-  use_cdn = false                # 设为 true 使用 CDN 加载字体
+  author = "你的名字"
+  description = "记录思考，分享作品。"
+  theme = "toggle"
+  toc = true
 
-  # 导航菜单
   [[params.menu]]
-    name = "/posts"
-    url = "/posts"
-    weight = 1
+    name = "文章"
+    url = "/posts/"
   [[params.menu]]
-    name = "/about"
-    url = "/about"
-    weight = 2
-
-  # 社交链接 — 图标名称对应 static/icons/social/ 下的文件名
-  [[params.social]]
-    name = "github"
-    url = "https://github.com/yourname"
-    icon = "github"
-  [[params.social]]
-    name = "email"
-    url = "mailto:you@example.com"
-    icon = "email"
-  [[params.social]]
-    name = "rss"
-    url = "/index.xml"
-    icon = "rss"
-
-  # Gitalk 评论（不需要可删除此节）
-  [params.gitalk]
-    owner = "your-github-username"
-    repo = "your-repo"
-    clientId = "your-client-id"
-    clientSecret = "your-client-secret"
-
-  # 访问统计（不需要可删除对应节）
-  [params.analytics]
-    [params.analytics.umami]
-      website_id = "your-website-id"
-      host_url = "https://api-gateway.umami.dev/"
-    [params.analytics.goatcounter]
-      user = "your-goatcounter-user"
-      host = "goatcounter.com"
+    name = "项目"
+    url = "/projects/"
+  [[params.menu]]
+    name = "关于"
+    url = "/about/"
 ```
 
-### 主题模式
+顶层 `theme` 选择 Hugo 主题；`params.theme` 控制深浅模式，两者用途不同。
+已有站点根目录中的 `layouts/`、同路径 `assets/`、`static/` 文件会覆盖主题资源。
+若从原 Tracelog 切换到主题，先备份，再移走重复模板和资源，以便后续更新主题能生效；
+保留个人 `content/`、`static/imgs/` 与站点配置。
 
-| 值       | 行为                                   |
-| -------- | -------------------------------------- |
-| `light`  | 始终亮色                               |
-| `dark`   | 始终暗色                               |
-| `auto`   | 跟随系统 `prefers-color-scheme`        |
-| `toggle` | 手动切换按钮 + `localStorage` 记住选择 |
+## 预览示例与构建
 
-## 内容写作
-
-### 创建文章
+在主题仓库根目录执行（目录名应为 `selene`）：
 
 ```sh
-hugo new posts/2024-01-01-hello-world.md
-hugo serve -D   # -D 包含草稿文章
+hugo server --source exampleSite --themesDir ../.. --theme selene -D
 ```
 
-### 前置元数据（Frontmatter）
+也可以把 `exampleSite/` 中的配置和内容复制到自己的 Hugo 站点，再安装主题。
+在自己的站点根目录执行：
+
+```sh
+hugo server -D
+hugo --baseURL https://example.org/
+```
+
+默认预览地址为 `http://localhost:1313/`，构建产物输出到站点的 `public/`。
+正式构建默认不包含草稿；发布前将文章 `draft` 改为 `false`。
+主题随附字体 CSS 使用 `/fonts/` 绝对路径，建议部署在域名根路径；
+部署到 `/blog/` 等子路径时，需要在站点覆盖 `assets/css/fonts.css`，调整字体 URL。
+
+## 将仓库作为完整博客模板使用
+
+以下操作适用于刚下载的仓库副本。若根目录已有自己的配置或 `content/`，先备份，
+再手动合并配置和内容，避免覆盖同名文件。
+
+1. 下载仓库并进入目录。也可下载 ZIP、解压后在终端进入解压目录：
+
+   ```sh
+   git clone https://github.com/zhuzaiye/selene.git
+   cd selene
+   ```
+
+2. 备份根目录的主题默认配置，再用示例配置替换它，并复制示例内容：
+
+   ```sh
+   cp hugo.toml hugo.toml.bak
+   cp exampleSite/hugo.toml hugo.toml
+   cp -R exampleSite/content ./
+   ```
+
+   当前示例站点只包含配置和 `content/`。如果以后添加了 `exampleSite/static/` 等站点资源，
+   也需将其中的文件合并到根目录对应目录，保留根目录原有的主题资源。
+
+3. 编辑根目录的 `hugo.toml`：删除顶层的 `theme = "selene"`，因为 Hugo 会直接使用
+   根目录中的模板和资源。保留 `[params]` 下的 `theme = "toggle"`，它控制深浅模式。
+   将 `baseURL`、`title`、`locale`、作者、描述、菜单和社交链接改为自己的设置。
+   英文站点可使用 `locale = "en-US"`；示例内容本身仍为中文，需要自行修改。
+
+4. 在根目录直接预览和构建，不再使用 `--source exampleSite`、`--themesDir` 或 `--theme`：
+
+   ```sh
+   hugo server -D
+   ```
+
+   预览地址为 `http://localhost:1313/`。确认效果后停止预览服务，再构建：
+
+   ```sh
+   hugo
+   ```
+
+   构建结果位于根目录的 `public/`。发布前设置正确的 `baseURL`，并将需要发布的文章设为 `draft: false`。
+
+5. 此后在根目录的 `content/posts/` 写文章，在 `content/projects/` 管理项目，
+   编辑 `content/about.md`，并将个人图片放到根目录的 `static/imgs/`。
+   `exampleSite/` 不再参与默认构建，可保留作参考，也可在确认迁移完成后删除。
+   根目录的 `layouts/`、`assets/`、`static/` 和 `archetypes/` 仍是站点所需的主题文件，应保留。
+
+这种方式仍然可以更新，但不能通过主题子模块单独升级。使用 Git 时，先将自己的博客保存到个人仓库，
+将 Selene 原仓库设为上游，更新前提交或备份个人修改，再合并需要的上游变更并处理冲突；
+尤其检查根目录的 `hugo.toml`，避免恢复主题引用或丢失个人配置。若使用 ZIP 下载，则需手动比较并同步更新。
+更新后重新预览并构建，确认个人文章、图片和配置保持正确。希望长期独立升级主题时，优先使用前面的子模块方式。
+
+## 站点设置
+
+以下配置均放在 `[params]` 下：
+
+| 字段 | 用途 |
+| --- | --- |
+| `author` | 默认作者；文章的 `author` 优先，最后回退到站点标题 |
+| `description` | 站点描述，页面未设置描述时用于 meta |
+| `theme` | `light` 固定浅色、`dark` 固定深色、`auto` 跟随系统、`toggle` 手动切换；默认 `toggle` |
+| `toc` | 显示文章目录，默认 `true`；文章需包含 Markdown 标题 |
+| `avatar` | 文末作者头像，路径相对于 `static/`，如 `/imgs/avatar.png` |
+| `home_avatar` | 导航圆形头像；依次回退到 `avatar`、`logo`、内置人物图标 |
+| `logo` | 未配置头像时使用的导航图片 |
+| `favicon` | 相对于 `assets/` 的图片路径，如 `imgs/favicon.png` |
+| `stylesheets` | 额外 CSS 资源数组，相对于 `assets/`，如 `["css/custom.css"]` |
+| `mathjax` | 是否从 CDN 加载 MathJax，默认关闭 |
+| `mathjax_dollar_inline_enable` | 是否允许 `$...$` 行内公式，需同时开启 `mathjax` |
+| `use_cdn` | 是否额外加载 CDN 字体，默认关闭 |
+
+菜单使用 `[[params.menu]]`，按配置中的顺序显示。社交链接示例：
+
+```toml
+[[params.social]]
+  name = "GitHub"
+  url = "https://github.com/yourname"
+  icon = "github"
+[[params.social]]
+  name = "邮箱"
+  url = "mailto:you@example.org"
+  icon = "email"
+[[params.social]]
+  name = "RSS"
+  url = "/index.xml"
+  icon = "rss"
+```
+
+`icon` 对应 `static/icons/social/` 下不含 `.svg` 的文件名。
+RSS 使用 Hugo 默认的 `/index.xml` 输出。
+
+## 写文章
+
+在站点根目录执行，主题原型会生成草稿：
+
+```sh
+hugo new content posts/hello.md
+```
+
+文章位于 `content/posts/`，front matter 示例：
 
 ```yaml
 ---
-title: "Hello World"
-date: 2024-01-01
-draft: true
-description: "文章简述，用于列表预览和 SEO"
-comment: true               # 在该页面启用 Gitalk 评论
-cover_image: "/imgs/cover.svg"  # 公众号风格的封面图
-tags: ["tag1", "tag2"]
+title: "第一篇文章"
+date: 2026-01-01T10:00:00+08:00
+draft: false
+description: "文章摘要"
+author: "作者名字"
+tags: ["Hugo", "笔记"]
+comment: true
+cover_image: "/imgs/hello.svg"
 ---
 ```
 
-### Shortcodes
+图片放入站点 `static/imgs/`，正文通过 `/imgs/文件名` 引用。
+首页展示 `posts` 分区文章；`/posts/` 使用横向卡片，未设置封面时仅显示文字。
+标签按填写顺序显示并链接到归档，相同标签保持相同颜色。
 
-**Note** — 可折叠提示框：
+文章使用 760px 阅读栏，桌面端目录位于侧边，窄屏目录可展开。
+代码块支持复制，超过 24 行可展开或收起；设置 `markup.highlight.noClasses = false`
+可使用主题自带的语法高亮配色。宽表格支持横向滚动。
+手机端互动栏固定在底部，桌面端位于文末。
+点赞仅保存在当前浏览器的 `localStorage` 中，不是全站统计；
+分享使用系统分享接口或复制链接；评论按钮定位到已配置的 Gitalk 编辑区。
 
-```go
-{{</* note header="提示" clickable=true hidden=false center=false */>}}
-这是提示框中的内容。
-{{</* /note */>}}
+## 项目页与关于页
+
+项目文件放在 `content/projects/`，使用以下字段：
+
+```yaml
+---
+title: "示例项目"
+draft: false
+weight: 1
+description: "项目简介"
+local_image: "/imgs/project.png"
+link_to: "https://github.com/yourname/project"
+source: "GitHub"
+comment: false
+---
 ```
 
-参数：`header`（标题）、`clickable`（可点击展开/收起）、`hidden`（初始折叠）、`center`（标题居中）。
+项目按 `weight` 排序。`remote_image` 可替代 `local_image` 使用远程图片；
+未配置图片时显示标题首字。`source` 未填写时使用外链域名。
+未设置 `link_to` 时链接到项目自身的详情页。
 
-**Mermaid** — 图表：
-
-```go
-{{</* mermaid */>}}
-graph TD;
-  A-->B;
-  A-->C;
-  B-->D;
-  C-->D;
-{{</* /mermaid */>}}
-```
-
-## 搜索
-
-启用搜索，在 `hugo.toml` 中添加：
+关于页位于 `content/about.md`，设置 `type: about`、`comment: false`。
+普通 Markdown 即可；需要示例中的自定义介绍布局时，可参考 `exampleSite/content/about.md`。
+原始 HTML 布局需要在站点配置启用：
 
 ```toml
-[params]
-  build_search_index = true
-  search_index_format = "elasticlunr_json"  # 或 "elasticlunr_javascript"
+[markup.goldmark.renderer]
+  unsafe = true
 ```
 
-搜索索引在构建时生成，前端由 `searchElasticlunr.js` 处理。
+## 短代码与公式
 
-## 评论系统
+提示块支持标题和点击展开，示例：
 
-本主题使用 [Gitalk](https://github.com/gitalk/gitalk) — 评论以 GitHub Issues 的形式存储在你指定的仓库中。在站点配置中设置 `[params.gitalk]` 即可。如果某篇文章不需要评论，在其 frontmatter 中设置 `comment: false`。
+```text
+{{< note header="提示" clickable=true center=false >}}
+这里可以写 **Markdown** 内容。
+{{< /note >}}
+```
 
-## 访问统计
+`clickable`、`center` 默认关闭。当前 `hidden=true` 会输出空内容容器，
+需要保留正文时请省略该参数。
 
-支持两种统计服务：
+流程图使用内置 Mermaid 资源：
 
-- **Umami** — 注重隐私、可自托管的统计
-- **GoatCounter** — 轻量级开源统计
+```text
+{{< mermaid >}}
+graph LR
+  A[开始] --> B[完成]
+{{< /mermaid >}}
+```
 
-在 `[params.analytics]` 中配置一个或两个，不需要的节可删除。
+数学公式需设置 `params.mathjax = true`；块级公式可使用 `$$...$$`，
+行内 `$...$` 还需启用 `mathjax_dollar_inline_enable`。
 
-## 字体
+## Gitalk 评论（可选）
 
-主题内置了三款字体：
+默认不启用。需要时，在站点配置中填写自己的 GitHub 仓库与 OAuth 应用配置：
 
-| 字体             | 用途             | 字重                 |
-| ---------------- | ---------------- | -------------------- |
-| JetBrains Mono   | 代码块、行内代码 | Regular, Bold        |
-| Space Grotesk    | 标题（回退字体） | Regular, Bold        |
-| Zed Text/Display | 正文、标题       | Regular, Bold, Heavy |
+```toml
+[params.gitalk]
+  owner = "your-github-username"
+  repo = "your-comments-repo"
+  clientId = "your-oauth-client-id"
+  clientSecret = "your-oauth-client-secret"
+```
 
-设置 `use_cdn = true` 可以通过 CDN 加载 JetBrains Mono 和 Space Grotesk，节省本地静态资源。
+仓库需开启 Issues，OAuth 回调地址需与站点匹配。Gitalk 采用浏览器端 OAuth，
+这里的配置会输出到公开网页，不应当将此字段视为服务端保密存储。
+删除整个配置块即可关闭评论；单页可设置 `comment: false`。
 
-## 更新主题
+主题固定加载 Gitalk 1.8.0 的 JS 和 CSS，依赖 GitHub API 及 CDN 网络连接。
+未初始化的文章由仓库作者登录后点击初始化按钮创建 Issue。
+文章日期用于关联讨论，迁移时应保留已有日期，避免关联到新的讨论。
 
-如果是通过 git submodule 安装：
+评论支持话题分组、回复、Markdown 预览、分页和会话草稿。
+每次加载 50 条留言，超过 3 条回复的话题可展开。
+回复正文末尾的 `tracelog-thread:v1` 隐藏标记保存父留言和根话题 ID，
+请在 GitHub 编辑评论时保留；旧评论没有标记时作为独立话题显示。
+
+## 可选功能的边界
+
+MathJax、Gitalk 和 CDN 字体需要外部网络；普通页面、主题资源与字体随站点部署。
+当前保留了 Elasticlunr 搜索脚本和加载配置，但没有附带索引生成模板及搜索入口，
+不能仅通过 `build_search_index = true` 获得完整搜索功能，默认应保持关闭。
+统计脚本保留在 `assets/js/imamu.js`、`count.js`；按需接入前应自行验证配置与服务可用性。
+
+## 目录与维护
+
+```text
+selene/
+├── archetypes/default.md      # 新文章原型
+├── assets/css/
+│   ├── fonts.css              # 字体声明
+│   ├── main.css               # 基础样式与页面布局
+│   ├── parts/                 # 文章、目录、评论、卡片等模块
+│   └── theme/                 # 深浅配色变量
+├── assets/js/                 # 代码块、目录、互动与评论逻辑
+├── exampleSite/               # 中文示例站点
+├── hugo.toml                  # 可被站点覆盖的主题默认值
+├── layouts/                   # Hugo 模板、partials、shortcodes
+├── static/fonts/              # 本地字体
+├── static/icons/              # 主题图标与社交图标
+└── theme.toml                 # 主题元信息
+```
+
+`layouts/partials/styles.html` 显式管理公共 CSS 的加载顺序，合并、压缩并生成内容指纹。
+新增模块样式时需加入其中的 `$paths` 列表。使用普通 CSS，不使用 Sass 语法。
+额外样式在公共样式之后加载，推荐通过站点 `assets/css/custom.css` 与 `params.stylesheets`
+完成个性化覆盖，减少升级主题时的冲突。
+
+文章样式位于 `parts/post.css`，目录位于 `parts/toc.css` 与 `js/toc.js`，
+评论位于 `parts/comments.css` 与 `js/comments.js`，代码交互位于 `js/codeblock.js`。
+原项目已有压缩版 `main.min.js`，模板直接加载它；修改 `main.js` 时需要同步压缩版本。
+独立加载的 `codeblock.js`、`comments.js`、`toc.js` 等由 Hugo 构建时压缩并生成指纹。
+
+更新子模块后预览并构建验证，再提交主站点记录的子模块版本：
 
 ```sh
-cd themes/selene
-git pull origin master
+git submodule update --init --recursive
+git -C themes/selene pull --ff-only
+hugo
 ```
 
-## 许可证
-
-MIT © [hzzhu92](https://github.com/zhuzaiye)
-
-`static/icons/social/` 中的社交图标来自 [Simple Icons](https://simpleicons.org/)，同样使用 MIT 许可证。
+主题保留原有第三方资源及文件内声明，社交图标许可见
+[`static/icons/social/LICENSE`](static/icons/social/LICENSE)。
+Selene 采用 [MIT 许可证](LICENSE)；字体等第三方资源仍遵循各自的许可证。

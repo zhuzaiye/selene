@@ -1,6 +1,6 @@
 {{ define "main" }}
 {{ $isPost := eq .Section "posts" }}
-{{ $siteAuthor := .Site.Params.author | default .Site.Title }}
+{{ $siteAuthor := .Params.author | default .Site.Params.author | default .Site.Title }}
 {{ $siteDescription := .Site.Params.description }}
 
 <article class="post-single{{ if eq .Section "posts" }} wechat-post{{ end }}{{ with .Type }} page-type-{{ . }}{{ end }}">
@@ -12,17 +12,22 @@
     {{ end }}
 
     <!-- Header -->
+    {{ if ne .Type "about" }}
     <header class="post-header{{ if eq .Section "posts" }} wechat-header{{ end }}">
         <h1 class="post-title{{ if eq .Section "posts" }} wechat-title{{ end }}">{{ .Title }}</h1>
         {{ if $isPost }}
+        {{ if .GetTerms "tags" }}
+        <div class="wechat-tags">
+            {{ partial "post-tags.html" . }}
+        </div>
+        {{ end }}
         <div class="post-meta wechat-meta">
+            {{ with $siteAuthor }}<span class="wechat-author">{{ . }}</span>{{ end }}
             {{ if .Date }}
             <time class="wechat-date" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
-                {{ .Date.Format "January 2, 2006" }}
+                {{ .Date.Format "2006年1月2日" }}
             </time>
             {{ end }}
-            {{ if and .Date $siteAuthor }}<span class="wechat-meta-separator">|</span>{{ end }}
-            {{ with $siteAuthor }}<span class="wechat-author">{{ . }}</span>{{ end }}
         </div>
         {{ else }}
         <div class="post-meta">
@@ -48,6 +53,16 @@
         </div>
         {{ end }}
     </header>
+    {{ end }}
+
+    {{ if and $isPost .Site.Params.toc .Fragments.Headings }}
+    <aside class="article-toc" aria-label="文章目录">
+        <details class="toc-panel">
+            <summary>目录<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+            <div class="toc-sticky">{{ .TableOfContents }}</div>
+        </details>
+    </aside>
+    {{ end }}
 
     <!-- Article content -->
     <div class="post-content">
@@ -57,7 +72,7 @@
 </article>
 
 {{ if eq .Section "posts" }}
-<!-- Fixed bottom bar: author, actions, comment -->
+<!-- Article actions: inline on desktop, a compact bar on mobile. -->
 <div class="wechat-bottom-bar">
     <div class="wechat-bottom-inner">
         <div class="wechat-bottom-left">
@@ -91,14 +106,6 @@
         </div>
     </div>
 </div>
-{{ end }}
-
-{{ if and .TableOfContents (eq .Section "posts") }}
-<aside class="toc-sidebar">
-    <div class="toc-sticky">
-        {{ .TableOfContents }}
-    </div>
-</aside>
 {{ end }}
 
 {{ if $isPost }}

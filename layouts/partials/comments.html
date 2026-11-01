@@ -1,24 +1,41 @@
-{{ if and .IsPage (ne .Params.comment false) -}}
-  <!-- gitalk -->
-  {{- if .Site.Params.gitalk.owner -}}
-    <div id="gitalk-container"></div>
-    <link rel="stylesheet" href="https://unpkg.com/gitalk@1.2.2/dist/gitalk.css" crossorigin="anonymous">
-    <script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-      var gitalk = new Gitalk({
-        id: '{{ .Date }}',
-        title: '{{ .Title }}',
-        clientID: '{{ .Site.Params.gitalk.clientId }}',
-        clientSecret: '{{ .Site.Params.gitalk.clientSecret }}',
-        repo: '{{ .Site.Params.gitalk.repo }}',
-        owner: '{{ .Site.Params.gitalk.owner }}',
-        admin: ['{{ .Site.Params.gitalk.owner }}'],
-        body: decodeURI(location.href),
-        language: "en"
-      });
-      gitalk.render('gitalk-container');
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
-  {{- end }}
-
-{{- end }}
+{{ if and .IsPage (ne .Params.comment false) }}
+{{ with .Site.Params.gitalk }}
+{{ if .owner }}
+{{ $options := dict
+    "id" (printf "%v" $.Date)
+    "title" $.Title
+    "clientID" .clientId
+    "clientSecret" .clientSecret
+    "repo" .repo
+    "owner" .owner
+    "admin" (slice .owner)
+    "body" $.Permalink
+}}
+<section class="article-comments" id="article-comments" data-threaded-comments data-gitalk-src="https://unpkg.com/gitalk@1.8.0/dist/gitalk.min.js" aria-label="文章留言">
+    <div class="comments-status-row" data-comment-status-row>
+        <p class="comments-status" data-comment-status role="status">正在加载讨论…</p>
+        <button type="button" class="thread-text-button" data-comment-retry hidden>重试</button>
+        <a class="comments-issue-link" data-comment-issue hidden href="https://github.com/{{ .owner }}/{{ .repo }}/issues" target="_blank" rel="noopener noreferrer">在 GitHub 查看</a>
+    </div>
+    <div class="comment-threads" data-comment-threads></div>
+    <button type="button" class="comments-more" data-comment-more hidden>加载更多讨论</button>
+    <div data-comment-composer-home>
+        <div class="comment-composer" data-comment-composer hidden>
+            <div class="composer-heading">
+                <span data-comment-reply-label>写留言</span>
+                <button type="button" class="thread-text-button" data-comment-cancel hidden>取消回复</button>
+            </div>
+            <p class="composer-note" data-comment-reply-note role="status"></p>
+            <div id="gitalk-container"></div>
+        </div>
+    </div>
+    <noscript>请启用 JavaScript，或<a href="https://github.com/{{ .owner }}/{{ .repo }}/issues">在 GitHub 查看和参与讨论</a>。</noscript>
+</section>
+<script type="application/json" id="gitalk-options">{{ $options | jsonify | safeJS }}</script>
+<link rel="stylesheet" href="https://unpkg.com/gitalk@1.8.0/dist/gitalk.css" crossorigin="anonymous">
+{{ with resources.Get "js/comments.js" | minify | fingerprint }}
+<script defer src="{{ .RelPermalink }}"></script>
+{{ end }}
+{{ end }}
+{{ end }}
+{{ end }}

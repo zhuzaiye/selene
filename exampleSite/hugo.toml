@@ -1,0 +1,40 @@
+baseURL = "https://example.org/"
+title = "Selene 示例站点"
+locale = "zh-CN"
+theme = "selene"
+enableRobotsTXT = true
+
+[pagination]
+  pagerSize = 10
+
+[markup.highlight]
+  noClasses = false
+[markup.goldmark.renderer]
+  unsafe = true
+
+[params]
+  author = "示例作者"
+  description = "记录思考，分享作品。"
+  theme = "toggle"
+  toc = true
+  mathjax = false
+  mathjax_dollar_inline_enable = false
+
+  [[params.menu]]
+    name = "文章"
+    url = "/posts/"
+  [[params.menu]]
+    name = "项目"
+    url = "/projects/"
+  [[params.menu]]
+    name = "关于"
+    url = "/about/"
+
+  [[params.social]]
+    name = "GitHub"
+    url = "https://github.com/zhuzaiye/selene"
+    icon = "github"
+  [[params.social]]
+    name = "RSS"
+    url = "/index.xml"
+    icon = "rss"

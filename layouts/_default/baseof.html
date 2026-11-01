@@ -1,10 +1,10 @@
 <!-- Define base template -->
 <!DOCTYPE html>
-<html lang="{{.Site.Language}}" class="light">
+<html lang="{{.Site.Language}}" class="light" data-theme-mode="{{ .Site.Params.theme | default "toggle" }}">
 {{/* header part */}}
 {{ partial "header.html" . }}
 
-<body>
+<body{{ if and .IsPage (eq .Section "posts") }} class="article-page"{{ else if and .IsPage (eq .Type "about") }} class="about-page"{{ end }}>
    <div class="page-wrapper">
       <div class="page-container">
          <div class="main-content">

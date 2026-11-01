@@ -93,9 +93,27 @@
   if (!commentBtn) return;
 
   commentBtn.addEventListener('click', function () {
+    if (window.tracelogComments) {
+      window.tracelogComments.focus();
+      return;
+    }
     const container = document.getElementById('gitalk-container');
     if (container) {
       container.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 })();
+
+// Give wide tables their own scroll area rather than widening the article.
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.wechat-post .post-content table').forEach(table => {
+    if (table.closest('.code-block, .article-table')) return;
+    const container = document.createElement('div');
+    container.className = 'article-table';
+    container.tabIndex = 0;
+    container.setAttribute('role', 'region');
+    container.setAttribute('aria-label', '表格，可横向滚动');
+    table.before(container);
+    container.append(table);
+  });
+});

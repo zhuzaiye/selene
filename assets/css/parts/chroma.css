@@ -1,0 +1,123 @@
+/* Syntax colors follow the active site theme. */
+.chroma {
+  color: var(--code-text);
+  background-color: var(--bg-code);
+}
+
+.chroma .hl {
+  background-color: var(--code-highlight);
+}
+
+.chroma .ln,
+.chroma .lnt {
+  color: var(--text-2);
+}
+
+.chroma .k,
+.chroma .kc,
+.chroma .kn,
+.chroma .kp,
+.chroma .kr {
+  color: var(--code-keyword);
+}
+
+.chroma .kd {
+  color: var(--code-type);
+  font-style: italic;
+}
+
+.chroma .kt {
+  color: var(--code-type);
+}
+
+.chroma .na {
+  color: var(--code-function);
+}
+
+.chroma .nb {
+  color: var(--code-type);
+  font-style: italic;
+}
+
+.chroma .nc {
+  color: var(--code-function);
+}
+
+.chroma .nf {
+  color: var(--code-function);
+}
+
+.chroma .nl {
+  color: var(--code-type);
+  font-style: italic;
+}
+
+.chroma .nt {
+  color: var(--code-keyword);
+}
+
+.chroma .nv,
+.chroma .vc,
+.chroma .vg,
+.chroma .vi {
+  color: var(--code-type);
+  font-style: italic;
+}
+
+.chroma .s,
+.chroma .sa,
+.chroma .sb,
+.chroma .sc,
+.chroma .dl,
+.chroma .sd,
+.chroma .s2,
+.chroma .se,
+.chroma .sh,
+.chroma .si,
+.chroma .sx,
+.chroma .sr,
+.chroma .s1,
+.chroma .ss {
+  color: var(--code-string);
+}
+
+.chroma .m,
+.chroma .mb,
+.chroma .mf,
+.chroma .mh,
+.chroma .mi,
+.chroma .il,
+.chroma .mo {
+  color: var(--code-number);
+}
+
+.chroma .o,
+.chroma .ow {
+  color: var(--code-keyword);
+}
+
+.chroma .c,
+.chroma .ch,
+.chroma .cm,
+.chroma .c1,
+.chroma .cs {
+  color: var(--code-comment);
+}
+
+.chroma .cp,
+.chroma .cpf {
+  color: var(--code-keyword);
+}
+
+.chroma .gd {
+  color: var(--code-deleted);
+}
+
+.chroma .gi {
+  color: var(--code-function);
+  font-weight: bold;
+}
+
+.chroma .go {
+  color: var(--code-comment);
+}

@@ -1,4 +1,9 @@
-
 {{ define "main" }}
-    {{ template "section" .}}
+<main class="posts-feed" aria-label="文章列表">
+    {{ $paginator := .Paginate .RegularPages.ByDate.Reverse }}
+    {{ range $paginator.Pages }}
+        {{ partial "post-preview.html" . }}
+    {{ end }}
+</main>
+{{ partial "pagination.html" . }}
 {{ end }}

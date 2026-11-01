@@ -1,0 +1,103 @@
+.tags li::before {
+  content: "🏷 ";
+}
+
+.tags a {
+  border-bottom: none;
+}
+
+.tags a:hover {
+  color: var(--primary-color);
+}
+
+/* Ordered badges are displayed in a separate row below each article title. */
+.article-tag {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--tag-color);
+  color: #ffffff;
+  font-family: var(--reading-font);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.article-tag:hover {
+  color: #ffffff;
+  filter: brightness(0.9);
+}
+
+.article-tag:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+.tag-color-0 {
+  --tag-color: #2563b8;
+}
+.tag-color-1 {
+  --tag-color: #8052ac;
+}
+.tag-color-2 {
+  --tag-color: #398b36;
+}
+.tag-color-3 {
+  --tag-color: #9c6519;
+}
+.tag-color-4 {
+  --tag-color: #197d78;
+}
+.tag-color-5 {
+  --tag-color: #b24966;
+}
+
+.legacy-post-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  color: var(--text-2);
+  font-family: var(--reading-font);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.legacy-post-meta time {
+  color: inherit;
+}
+
+.wechat-post .wechat-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.wechat-post .wechat-meta {
+  gap: 6px 8px;
+}
+
+.tag-archive > h1 {
+  margin: 20px 0 0;
+  font-family: var(--reading-font);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 20px 0;
+}

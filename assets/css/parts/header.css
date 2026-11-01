@@ -32,10 +32,13 @@ header {
   max-width: 100%;
   box-sizing: border-box;
   overflow: visible;
-  
-  @media (min-width: 769px) {
+}
+
+@media (min-width: 769px) {
+  header {
     flex-wrap: nowrap;
   }
+
 }
 
 header .main {
@@ -50,19 +53,18 @@ header .main {
   font-weight: 600;
   letter-spacing: -0.01em;
   flex: 0 1 auto;
-
   /* Otherwise header and menu is too close on small screens*/
   margin-bottom: 0;
-  
-  a {
-    color: var(--text-0);
-    text-decoration: none;
-    transition: color 0.2s ease;
+}
 
-    &:hover {
-      color: var(--primary-color);
-    }
-  }
+header .main a {
+  color: var(--text-0);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+header .main a:hover {
+  color: var(--primary-color);
 }
 
 nav {
@@ -75,18 +77,18 @@ nav {
   font-size: 1.05rem;
   flex: 0 1 auto;
   min-width: fit-content;
-  
-  a {
-    color: var(--text-1);
-    text-decoration: none;
-    transition: color 0.2s ease;
-    font-weight: 500;
-    white-space: nowrap;
+}
 
-    &:hover {
-      color: var(--primary-color);
-    }
-  }
+nav a {
+  color: var(--text-1);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+nav a:hover {
+  color: var(--primary-color);
 }
 
 /* 小屏幕响应式布局 */
@@ -94,10 +96,11 @@ nav {
   header {
     flex-wrap: wrap;
   }
-  
+
   header .main {
     margin-bottom: 10px;
   }
+
 }
 
 .socials {
@@ -108,31 +111,39 @@ nav {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
-  align-items: flex-end;
+  align-items: center;
   gap: 12px;
 }
 
 .social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--nav-icon-size) + 4px);
+  height: calc(var(--nav-icon-size) + 4px);
+  line-height: 0;
   border-bottom: unset;
   background-image: unset;
   padding: 2px;
   transition: transform 0.2s ease;
-  
-  &:hover {
-    transform: translateY(-2px);
-  }
+}
+
+.social:hover {
+  transform: translateY(-2px);
 }
 
 .social>img {
   border: unset;
-  width: 22px;
-  height: 22px;
+  display: block;
+  width: var(--nav-icon-size);
+  height: var(--nav-icon-size);
+  object-fit: contain;
   opacity: 0.7;
   transition: opacity 0.2s ease;
-  
-  &:hover {
-    opacity: 1;
-  }
+}
+
+.social>img:hover {
+  opacity: 1;
 }
 
 .meta {
@@ -143,23 +154,32 @@ nav {
 }
 
 #dark-mode-toggle {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  border-radius: 3px;
   cursor: pointer;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  
-  img {
-    width: 20px;
-    height: 20px;
-    border: unset;
-    transition: transform 0.3s ease;
-    
-    &:hover {
-      transform: rotate(15deg);
-    }
-  }
-  
-  // 图标显示由 JavaScript 控制，不在这里设置 display: none
+  justify-content: center;
+  width: calc(var(--nav-icon-size) + 4px);
+  height: calc(var(--nav-icon-size) + 4px);
+  padding: 2px;
+  line-height: 0;
+}
+
+#dark-mode-toggle img {
+  display: block;
+  width: var(--nav-icon-size);
+  height: var(--nav-icon-size);
+  object-fit: contain;
+  border: unset;
+  transition: transform 0.3s ease;
+}
+
+#dark-mode-toggle img:hover {
+  transform: rotate(15deg);
 }
 
 h1,
@@ -211,4 +231,66 @@ h4::before,
 h5::before,
 h6::before {
   content: none;
+}
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--nav-icon-size) + 4px);
+  height: calc(var(--nav-icon-size) + 4px);
+  padding: 2px;
+  line-height: 0;
+  opacity: 0.8;
+}
+
+.home-link svg {
+  display: block;
+  width: var(--nav-icon-size);
+  height: var(--nav-icon-size);
+  max-height: none;
+}
+
+.home-link:hover {
+  opacity: 1;
+}
+
+.home-link:focus-visible,
+.social:focus-visible,
+#dark-mode-toggle:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 3px;
+}
+
+.home-link.home-avatar {
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  opacity: 1;
+  transition: border-color 0.15s ease;
+}
+
+.home-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.home-link.home-avatar:hover {
+  border-color: var(--text-1);
+}
+
+.home-avatar-default {
+  color: var(--text-1);
+  background: var(--bg-2);
+}
+
+.home-avatar-default svg {
+  width: 100%;
+  height: 100%;
+  max-height: none;
 }

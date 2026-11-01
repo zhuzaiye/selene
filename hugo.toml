@@ -1,0 +1,7 @@
+# 主题默认值；站点配置可覆盖。
+[markup.highlight]
+  noClasses = false
+
+[params]
+  theme = "toggle"
+  toc = true

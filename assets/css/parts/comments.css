@@ -1,0 +1,561 @@
+/* A compact Issue-style discussion, aligned with the article reading column. */
+.article-comments {
+  max-width: 760px;
+  margin: 16px 0 0;
+  padding: 0 0 12px;
+  font-family: var(--reading-font);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--article-text);
+  scroll-margin-top: 24px;
+}
+
+.article-comments [hidden] {
+  display: none !important;
+}
+
+.comments-status-row,
+.composer-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.comments-status,
+.comments-issue-link,
+.composer-note {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.comments-status-row {
+  justify-content: flex-start;
+  margin: 0 0 16px;
+}
+
+.comments-status {
+  margin: 0;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+.comments-status:empty,
+.composer-note:empty {
+  display: none;
+}
+
+.comments-issue-link {
+  margin-left: auto;
+}
+
+.article-comments a {
+  padding: 0;
+  text-decoration: none;
+}
+
+.article-comments a:hover {
+  text-decoration: underline;
+}
+
+.article-comments button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.comments-more {
+  appearance: none;
+  padding: 5px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background: var(--bg-1);
+  color: var(--text-0);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.comments-more:hover {
+  background: var(--bg-2);
+}
+
+.article-comments button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.article-comments button:focus-visible,
+.article-comments a:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 3px;
+}
+
+.comment-thread {
+  min-width: 0;
+  margin-bottom: 24px;
+}
+
+.thread-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 0 12px;
+  scroll-margin-top: 24px;
+}
+
+.thread-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  margin-top: 4px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--bg-2);
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+.thread-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thread-message-card {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg-0);
+}
+
+.thread-message-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-1);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.thread-user {
+  color: var(--text-0);
+  font-weight: 600;
+}
+
+.thread-author {
+  padding: 0 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  color: var(--text-1);
+  font-size: 11px;
+}
+
+.thread-date {
+  color: var(--text-2);
+}
+
+.thread-message-body {
+  padding: 12px;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.thread-message-body p,
+.article-comments .markdown-body p {
+  margin: 0 0 12px;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+.thread-message-body > :last-child {
+  margin-bottom: 0;
+}
+
+.thread-message-body .thread-reply-to {
+  margin-bottom: 8px;
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.thread-plain {
+  white-space: pre-wrap;
+}
+
+.thread-message-body a {
+  color: var(--link-color);
+}
+
+.thread-message-body img {
+  max-width: 100%;
+  height: auto;
+}
+
+.thread-message-body pre {
+  max-width: 100%;
+  margin: 12px 0;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.thread-message-body blockquote {
+  padding-left: 12px;
+  border-left: 3px solid var(--quote-border);
+  font-style: normal;
+}
+
+.thread-message-body h1,
+.thread-message-body h2,
+.thread-message-body h3,
+.thread-message-body h4,
+.thread-message-body h5,
+.thread-message-body h6 {
+  margin: 16px 0 8px;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.thread-message-body table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  font-family: inherit;
+}
+
+.thread-message-body th,
+.thread-message-body td {
+  padding: 5px 8px;
+  border: 1px solid var(--border-color);
+  font-family: inherit;
+}
+
+.thread-message-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 12px 10px;
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.thread-text-button,
+.thread-toggle {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--link-color);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.thread-text-button:hover,
+.thread-toggle:hover {
+  text-decoration: underline;
+}
+
+.thread-permalink {
+  margin-left: auto;
+  color: var(--text-2);
+}
+
+.thread-replies {
+  margin-left: 40px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border-color);
+}
+
+.thread-toggle,
+.thread-unresolved {
+  margin: 0 0 12px 52px;
+}
+
+.thread-unresolved {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.comments-more {
+  display: block;
+  margin: 0 auto 24px;
+}
+
+.comment-composer {
+  margin: 24px 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.thread-reply-slot .comment-composer {
+  margin: 16px 0 0 40px;
+  padding: 0 0 0 12px;
+  border-left: 2px solid var(--border-color);
+}
+
+.composer-heading {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-0);
+}
+
+.composer-note {
+  margin: 0 0 12px;
+  font-family: inherit;
+}
+
+/* Gitalk owns login, Issue initialization and the editor. Its flat list is replaced. */
+.article-comments #gitalk-container {
+  margin: 0;
+  font-size: 14px;
+}
+
+.article-comments .gt-container .hide {
+  display: none !important;
+}
+
+.article-comments .gt-container {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--article-text);
+}
+
+.article-comments .gt-container .gt-comments,
+.article-comments .gt-container .gt-counts,
+.article-comments .gt-container .gt-error,
+.article-comments .gt-container .gt-initing,
+.article-comments .gt-container .gt-action-sortasc,
+.article-comments .gt-container .gt-action-sortdesc {
+  display: none;
+}
+
+.article-comments .gt-container a {
+  color: var(--link-color);
+}
+
+.article-comments .gt-container .gt-meta {
+  z-index: 5;
+  margin: 0 0 10px;
+  padding: 0;
+  border: 0;
+  font-size: 12px;
+}
+
+.article-comments .gt-container .gt-meta::before,
+.article-comments .gt-container .gt-meta::after {
+  display: none;
+}
+
+.article-comments .gt-container .gt-user {
+  float: none;
+  text-align: right;
+}
+
+.article-comments .gt-container .gt-popup {
+  top: 25px;
+  border-color: var(--border-color);
+  border-radius: 5px;
+  background: var(--bg-0);
+  color: var(--text-1);
+}
+
+.article-comments .gt-container .gt-copyright {
+  border-color: var(--border-color);
+}
+
+.article-comments .gt-container .gt-header {
+  gap: 12px;
+}
+
+.article-comments .gt-container .gt-avatar,
+.article-comments .gt-container .gt-avatar-github {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.article-comments .gt-container .gt-avatar img {
+  border-radius: 50%;
+}
+
+.article-comments .gt-container .gt-header-comment {
+  min-width: 0;
+  margin-left: 0;
+}
+
+.article-comments .gt-container .gt-header-textarea,
+.article-comments .gt-container .gt-header-preview {
+  min-height: 100px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background: var(--bg-1);
+  color: var(--article-text);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.article-comments .gt-container .gt-header-textarea:focus {
+  border-color: var(--link-color);
+}
+
+.article-comments .gt-container .gt-header-textarea::placeholder {
+  color: var(--text-2);
+}
+
+.article-comments .gt-container .gt-header-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.article-comments .gt-container .gt-header-controls::before,
+.article-comments .gt-container .gt-header-controls::after {
+  display: none;
+}
+
+.article-comments .gt-container .gt-header-controls-tip {
+  margin-right: auto;
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.article-comments .gt-container .gt-btn {
+  float: none;
+  width: auto;
+  margin: 0;
+  padding: 7px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background: var(--bg-1);
+  color: var(--text-0);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.article-comments .gt-container .gt-btn-public,
+.article-comments .gt-container .gt-btn-login {
+  background: var(--link-color);
+  border-color: var(--link-color);
+  color: var(--bg-0);
+}
+
+.article-comments .gt-container .gt-btn:hover {
+  filter: brightness(0.95);
+}
+
+.article-comments .gt-container .gt-btn:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+.article-comments .gt-container .gt-svg svg {
+  max-height: none;
+  fill: currentColor;
+}
+
+.article-comments .gt-container .gt-no-init {
+  padding: 8px 0;
+  text-align: left;
+  font-size: 13px;
+}
+
+.article-comments .gt-container .gt-no-init p {
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+.article-comments .gt-container .markdown-body {
+  color: var(--article-text);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  background: transparent;
+}
+
+@media (max-width: 600px) {
+  .comment-editing .wechat-bottom-bar {
+    display: none;
+  }
+
+  .thread-message {
+    gap: 8px;
+  }
+
+  .thread-replies {
+    margin-left: 16px;
+    padding-left: 8px;
+  }
+
+  .thread-toggle,
+  .thread-unresolved {
+    margin-left: 24px;
+  }
+
+  .thread-message-header {
+    padding: 7px 10px;
+  }
+
+  .thread-message-body {
+    padding: 10px;
+  }
+
+  .thread-reply-slot .comment-composer {
+    margin-left: 0;
+  }
+
+  .article-comments .gt-container .gt-header-avatar,
+  .article-comments .gt-container .gt-avatar-github {
+    display: none;
+  }
+}
+
+.article-comments .gt-container .gt-btn-preview {
+  order: 1;
+}
+
+.article-comments .gt-container .gt-btn-public,
+.article-comments .gt-container .gt-btn-login {
+  order: 2;
+}
+
+.article-comments .gt-container .markdown-body h1,
+.article-comments .gt-container .markdown-body h2,
+.article-comments .gt-container .markdown-body h3,
+.article-comments .gt-container .markdown-body h4 {
+  font-family: inherit;
+  color: var(--text-0);
+  border-color: var(--border-color);
+}
+
+.article-comments .gt-container .markdown-body pre,
+.article-comments .gt-container .markdown-body code {
+  background: var(--bg-2);
+  color: var(--article-text);
+}
+
+.article-comments .gt-container .markdown-body th,
+.article-comments .gt-container .markdown-body td {
+  border-color: var(--border-color);
+}
+
+.article-comments .gt-container .markdown-body tr {
+  background: var(--bg-0);
+  border-color: var(--border-color);
+}

@@ -1,0 +1,23 @@
+{{ $author := .Params.author | default site.Params.author | default site.Title }}
+<article class="post-preview">
+    <a class="post-preview-hit-area" href="{{ .RelPermalink }}" aria-label="{{ .Title }}"></a>
+    <div class="post-preview-body">
+        <div class="post-preview-info">
+            <h2 class="post-preview-title">{{ .Title }}{{ if .Draft }} <span class="draft-label">草稿</span>{{ end }}</h2>
+            {{ if .GetTerms "tags" }}
+            <div class="post-preview-tags">
+                {{ partial "post-tags.html" . }}
+            </div>
+            {{ end }}
+            <div class="post-preview-meta">
+                <span class="post-preview-author">{{ $author }}</span>
+                {{ if .Date }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>{{ end }}
+            </div>
+        </div>
+        {{ with .Params.cover_image }}
+        <div class="post-preview-cover">
+            <img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async">
+        </div>
+        {{ end }}
+    </div>
+</article>

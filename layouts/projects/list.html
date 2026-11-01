@@ -1,3 +1,43 @@
 {{ define "main" }}
-    {{ template "cards" .}}
+<section class="project-collection" aria-label="{{ .Title }}">
+    {{ $paginator := .Paginate .RegularPages.ByWeight }}
+    <div class="project-grid">
+        {{ range $paginator.Pages }}
+        {{ $href := .RelPermalink }}
+        {{ $external := false }}
+        {{ with .Params.link_to }}
+            {{ $href = . }}
+            {{ $external = or (hasPrefix . "https://") (hasPrefix . "http://") }}
+        {{ end }}
+        {{ $source := "" }}
+        {{ if $external }}
+            {{ $source = (urls.Parse $href).Host }}
+            {{ if eq $source "github.com" }}{{ $source = "GitHub" }}{{ end }}
+        {{ end }}
+        {{ with .Params.source }}{{ $source = . }}{{ end }}
+        <article class="project-card">
+            <a class="project-link" href="{{ $href }}"{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>
+                <div class="project-preview">
+                    {{ if .Params.local_image }}
+                    <img src="{{ .Params.local_image | relURL }}" alt="{{ .Title }} 项目预览" loading="lazy" decoding="async">
+                    {{ else if .Params.remote_image }}
+                    <img src="{{ .Params.remote_image }}" alt="{{ .Title }} 项目预览" loading="lazy" decoding="async">
+                    {{ else }}
+                    <span class="project-preview-placeholder" aria-hidden="true">{{ substr .Title 0 1 }}</span>
+                    {{ end }}
+                </div>
+                <div class="project-details">
+                    <h2 class="project-name">{{ .Title }}</h2>
+                    {{ with .Description }}<p class="project-summary">{{ . }}</p>{{ end }}
+                    <div class="project-footer">
+                        <span class="project-source">{{ $source }}</span>
+                        <svg class="project-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+                    </div>
+                </div>
+            </a>
+        </article>
+        {{ end }}
+    </div>
+    {{ partial "pagination.html" . }}
+</section>
 {{ end }}

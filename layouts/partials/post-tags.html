@@ -1,0 +1,4 @@
+{{/* GetTerms preserves front matter order and resolves real term URLs. */}}
+{{ range .GetTerms "tags" }}
+    {{ partial "tag-badge.html" . }}
+{{ end }}

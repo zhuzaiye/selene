@@ -1,11 +1,21 @@
 <header>
     <div class="main">
-        {{ if .Site.Params.logo }}
-        <a href="{{ .Site.BaseURL }}" class="logo">
+        {{ $homeAvatar := .Site.Params.home_avatar | default .Site.Params.avatar }}
+        {{ if $homeAvatar }}
+        <a href="{{ "/posts/" | relURL }}" class="home-link home-avatar" aria-label="文章列表">
+            <img src="{{ $homeAvatar | relURL }}" alt="" width="26" height="26">
+        </a>
+        {{ else if .Site.Params.logo }}
+        <a href="{{ "/posts/" | relURL }}" class="logo" aria-label="文章列表">
             <img alt="{{ .Site.Title }}" src="{{ .Site.Params.logo | relURL }}">
         </a>
         {{ else }}
-        <a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+        <a href="{{ "/posts/" | relURL }}" class="home-link home-avatar home-avatar-default" aria-label="文章列表">
+            <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+                <circle cx="16" cy="11" r="4.5" fill="currentColor"/>
+                <path d="M7 28v-3a9 9 0 0 1 18 0v3Z" fill="currentColor"/>
+            </svg>
+        </a>
         {{ end }}
 
         <div class="socials">
@@ -23,10 +33,10 @@
         {{ end }}
         |
         {{ if eq .Site.Params.theme "toggle" }}
-        <a id="dark-mode-toggle" onclick="toggleTheme(); return false;" href="#">
+        <button type="button" id="dark-mode-toggle" onclick="toggleTheme()" aria-label="切换深浅主题">
             <img src="{{ "/icons/sun.svg" | relURL }}" id="sun-icon" style="filter: invert(1)" alt="Light" />
             <img src="{{ "/icons/moon.svg" | relURL }}" id="moon-icon" alt="Dark" />
-        </a>
+        </button>
         {{ end }}
     </nav>
 </header>

@@ -1,0 +1,5 @@
+{{ $fixedColors := dict "python" 0 "word" 1 "自动化" 2 }}
+{{ $key := lower .LinkTitle }}
+{{ $color := mod (hash.FNV32a $key) 6 }}
+{{ if isset $fixedColors $key }}{{ $color = index $fixedColors $key }}{{ end }}
+<a class="article-tag tag-color-{{ $color }}" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>

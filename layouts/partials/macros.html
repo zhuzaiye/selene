@@ -15,10 +15,14 @@
     <div class="wechat-list-item">
         <div class="wechat-list-info">
             <h2 class="wechat-list-title">
-                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
                 {{ if .Draft }}<span class="draft-label">DRAFT</span>{{ end }}
             </h2>
-            <time class="wechat-list-date">{{ .Date.Format "2006-01-02" }}</time>
+            <div class="legacy-post-meta">
+                {{ partial "post-tags.html" . }}
+                <span>{{ .Params.author | default site.Params.author | default site.Title }}</span>
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+            </div>
         </div>
         <div class="wechat-list-thumb">
             {{ if .Params.cover_image }}

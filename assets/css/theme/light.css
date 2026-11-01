@@ -1,0 +1,28 @@
+:root.light {
+  --text-0: #1a1a1a;
+  --text-1: #555555;
+  --text-2: #888888;
+  --bg-0: #ffffff;
+  --bg-1: #f4f4f4;
+  --bg-2: #eeeeee;
+  --bg-code: #f8f9fb;
+  --code-text: #24292f;
+  --code-highlight: #eaeef2;
+  --code-keyword: #8250df;
+  --code-type: #0550ae;
+  --code-function: #116329;
+  --code-string: #0a3069;
+  --code-number: #0550ae;
+  --code-comment: #6e7781;
+  --code-deleted: #cf222e;
+  --border-color: #e5e5e5;
+  --article-text: #333333;
+  --inline-code-color: #4b596c;
+  --quote-border: #d8d8d8;
+  --table-bg: #f4f4f4;
+  --primary-color: #111111;
+  --accent: #111111;
+  --hover-color: #111111;
+  --hover-text: #ffffff;
+  --link-color: #576b95;
+}

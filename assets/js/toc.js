@@ -1,109 +1,76 @@
-// Table of Contents: scroll-spy + collapsible sections
+// Keep navigation inside the directory from moving the article viewport.
 (function () {
   'use strict';
-
-  const toc = document.querySelector('.toc-sticky');
-  if (!toc) return;
-
+  const panel = document.querySelector('.toc-panel');
+  if (!panel) return;
+  const toc = panel.querySelector('.toc-sticky');
   const nav = toc.querySelector('nav');
-  if (!nav) return;
-
   const links = [...nav.querySelectorAll('a')];
-  if (links.length === 0) return;
+  if (!links.length) return;
 
-  // --- Collapsible: add toggle to parent items ---
-  const parents = [...nav.querySelectorAll('li')].filter(li => li.querySelector('ul'));
+  const wide = matchMedia('(min-width: 1280px)');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  panel.open = wide.matches;
+  wide.addEventListener('change', () => { panel.open = wide.matches; });
 
-  parents.forEach(li => {
-    const toggle = document.createElement('span');
-    toggle.className = 'toc-toggle';
-    toggle.textContent = '−'; // expanded by default
-    toggle.setAttribute('aria-label', 'Toggle section');
-
+  nav.querySelectorAll('li').forEach(li => {
+    const children = li.querySelector(':scope > ul');
     const anchor = li.querySelector(':scope > a');
-    if (anchor) {
-      anchor.parentNode.insertBefore(toggle, anchor);
-    }
-
-    toggle.addEventListener('click', function (e) {
-      e.stopPropagation();
-      e.preventDefault();
-      const childUl = li.querySelector(':scope > ul');
-      if (!childUl) return;
+    if (!children || !anchor) return;
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'toc-toggle';
+    toggle.textContent = '−';
+    toggle.setAttribute('aria-label', `收起${anchor.textContent}的子目录`);
+    toggle.setAttribute('aria-expanded', 'true');
+    anchor.before(toggle);
+    toggle.addEventListener('click', () => {
       const collapsed = li.classList.toggle('toc-collapsed');
-      childUl.style.display = collapsed ? 'none' : '';
       toggle.textContent = collapsed ? '+' : '−';
+      toggle.setAttribute('aria-expanded', String(!collapsed));
+      toggle.setAttribute('aria-label', `${collapsed ? '展开' : '收起'}${anchor.textContent}的子目录`);
     });
   });
 
-  // --- Smooth scroll on link click ---
   links.forEach(link => {
-    link.addEventListener('click', function (e) {
+    link.addEventListener('click', e => {
+      const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      if (!target) return;
       e.preventDefault();
-      const id = this.getAttribute('href');
-      if (id && id.startsWith('#')) {
-        const target = document.querySelector(id);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          if (history.pushState) {
-            history.pushState(null, null, id);
-          }
+      if (!wide.matches) panel.open = false;
+      target.scrollIntoView({behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start'});
+      history.pushState(null, '', link.hash);
+    });
+  });
+
+  const headings = [...document.querySelectorAll('.post-content :is(h1,h2,h3,h4,h5,h6)[id]')];
+  function setActive(id) {
+    links.forEach(link => {
+      const active = decodeURIComponent(link.hash.slice(1)) === id;
+      link.parentElement.classList.toggle('selected', active);
+      if (active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+      if (active && wide.matches && panel.open) {
+        const bounds = toc.getBoundingClientRect();
+        const item = link.getBoundingClientRect();
+        if (item.top < bounds.top || item.bottom > bounds.bottom) {
+          toc.scrollTop += item.top - bounds.top - toc.clientHeight / 2;
         }
       }
     });
-  });
-
-  // --- Scroll-spy: highlight current heading ---
-  const headings = [...document.querySelectorAll('article h1, article h2, article h3, article h4, article h5, article h6')]
-    .filter(el => el.id);
-
-  if (headings.length === 0) return;
-
-  function clearActive() {
-    links.forEach(link => {
-      const li = link.closest('li');
-      if (li) li.classList.remove('selected', 'parent');
-    });
   }
 
-  function setActive(id) {
-    clearActive();
-    const link = links.find(l => decodeURIComponent(l.hash) === '#' + id);
-    if (!link) return;
-    const li = link.closest('li');
-    if (li) {
-      li.classList.add('selected');
-      // Mark all ancestor li as parent
-      let p = li.parentElement?.closest('li');
-      while (p) {
-        p.classList.add('parent');
-        p = p.parentElement?.closest('li');
-      }
-      // Scroll TOC to keep active visible
-      link.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+  let ticking = false;
+  function update() {
+    const current = [...headings].reverse().find(h => h.getBoundingClientRect().top <= 100) || headings[0];
+    if (current) setActive(current.id);
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
     }
-  }
-
-  // Use IntersectionObserver with rootMargin to detect which heading is at top
-  const observer = new IntersectionObserver(entries => {
-    // Find the first intersecting heading closest to top
-    const visible = entries
-      .filter(e => e.isIntersecting)
-      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-    if (visible.length > 0) {
-      setActive(visible[0].target.id);
-    }
-  }, {
-    rootMargin: '-80px 0px -75% 0px',
-    threshold: 0
-  });
-
-  headings.forEach(h => observer.observe(h));
-
-  // Init from URL hash or first heading
-  if (window.location.hash) {
-    setActive(window.location.hash.substring(1));
-  } else if (headings.length > 0) {
-    setActive(headings[0].id);
-  }
+  }, {passive: true});
+  update();
 })();

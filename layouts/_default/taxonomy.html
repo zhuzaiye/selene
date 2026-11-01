@@ -1,6 +1,20 @@
 {{ define "main" }}
-<main class="list taxonomy-list">
-    <h1 class="taxonomy-header">{{ .Title }}</h1>
-    {{ template "list_posts" .Pages }}
+<main class="tag-archive" aria-labelledby="tag-heading">
+    <h1 id="tag-heading">{{ .Title }}</h1>
+    {{ if eq .Kind "term" }}
+    <div class="posts-feed">
+        {{ $paginator := .Paginate .RegularPages.ByDate.Reverse }}
+        {{ range $paginator.Pages }}
+            {{ partial "post-preview.html" . }}
+        {{ end }}
+    </div>
+    {{ else }}
+    <div class="tag-cloud">
+        {{ range .Data.Terms.Alphabetical }}
+            {{ partial "tag-badge.html" .Page }}
+        {{ end }}
+    </div>
+    {{ end }}
 </main>
+{{ if eq .Kind "term" }}{{ partial "pagination.html" . }}{{ end }}
 {{ end }}
