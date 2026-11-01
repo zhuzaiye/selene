@@ -1,7 +1,15 @@
-# 主题默认值；站点配置可覆盖。
+# Theme defaults. Personal site settings belong in the site's hugo.toml.
+[module.hugoVersion]
+  min = "0.158.0"
+
 [markup.highlight]
   noClasses = false
+[markup.goldmark.renderer]
+  unsafe = true
 
 [params]
   theme = "toggle"
   toc = true
+  mathjax = true
+  mathjax_dollar_inline_enable = true
+  use_cdn = false

@@ -1,60 +1,12 @@
-base_url = "http://localhost:1313/"
-description = "Hugo simple blog theme"
-locale = "en-US"
-paginate = 10
+name = "Selene"
+license = "MIT"
+licenselink = "https://github.com/zhuzaiye/selene/blob/master/LICENSE"
+description = "A simple Hugo blog theme with light and dark modes."
+homepage = "https://github.com/zhuzaiye/selene"
+tags = ["blog", "responsive", "light", "dark"]
+features = ["Table of contents", "Syntax highlighting", "Mermaid", "MathJax", "Gitalk"]
+min_version = "0.158.0"
 
-[markup]
-  [markup.highlight]
-    style = "dracula"
-    noClasses = false
-  [markup.goldmark.renderer]
-    unsafe = true  # 允许在 Markdown 中使用原始 HTML
-
-[params]
-  description = ""
-  avatar = "/imgs/me_gibuli.png"    # about 使用的头像
-  home_avatar = "/imgs/me_gibuli.png" # 导航圆形头像，可替换为单独的方形图片
-
-  # 主题设置
-  theme = "toggle"              # light, dark, auto, toggle
-  toc = true                    # 启用目录
-  mathjax = true                # 启用数学公式
-  mathjax_dollar_inline_enable = true  # 启用单美元符号作为行内数学公式分隔符
-  
-  # 菜单配置
-  [[params.menu]]
-    name = "Articles"
-    url = "/posts"
-    weight = 1
-  [[params.menu]]
-    name = "Projects"
-    url = "/projects"
-    weight = 2
-  [[params.menu]]
-    name = "About"
-    url = "/about"
-    weight = 3
-  
-  # 社交链接
-  [[params.social]]
-    name = "github"
-    url = "https://github.com/xxx/"
-    icon = "github"
-  [[params.social]]
-    name = "email"
-    url = "mailto:xxx@gmail.com"
-    icon = "email"
-  [[params.social]]
-    name = "X"
-    url = "https://twitter.com/xxx"
-    icon = "x"
-  [[params.social]]
-    name = "rss"
-    url = "/index.xml"
-    icon = "rss"
-
-  [params.gitalk]           
-  owner = "xxx"             
-  repo = "xxx.github.io"              
-  clientId = ""           
-  clientSecret = ""
+[author]
+  name = "zhuzaiye"
+  homepage = "https://github.com/zhuzaiye"

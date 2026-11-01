@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Selene</h1>
-  <p>A standalone Hugo blog theme.</p>
+  <p>A simple Hugo blog theme.</p>
   <p>
     <a href="README.md">English</a> ·
     <a href="README_zh.md">简体中文</a> ·
@@ -8,173 +8,301 @@
   </p>
 </div>
 
-Selene includes templates, CSS, JavaScript, fonts, icons, and content archetypes.
-Personal posts, avatars, post images, site configuration, and build output are not
-part of the theme. `exampleSite/` provides a standalone Chinese example site
-without the original blog's comment credentials.
+Selene provides light and dark modes, a table of contents, code copying and folding,
+project pages, Mermaid, MathJax, and optional Gitalk comments.
 
 ## Requirements
 
-- Hugo **0.158.0 or later** (the example configuration uses `locale`).
-- The standard edition of Hugo is sufficient; Hugo Extended, Dart Sass, Node.js,
-  and npm installation are not required.
-- JavaScript must be enabled in the browser for interactive tables of contents,
-  theme switching, code copying, comments, and similar features.
+- Hugo **0.158.0 or later**, standard edition. No Extended edition, Sass, Node.js, or npm is required.
+- Enable browser JavaScript for interactive tables of contents, theme switching, code copying, and comments.
 
-## Choose how to use Selene
+## Configuration files and the purpose of exampleSite
 
-`exampleSite/` is a demonstration site for previewing and testing the theme. It
-contains configuration, sample posts, a project page, and an about page. Theme
-functionality comes from `layouts/`, `assets/`, `static/`, and `archetypes/` in the
-repository root. Choose the setup that fits your needs:
+| File or directory | Purpose | What to edit |
+| --- | --- | --- |
+| `theme.toml` | Theme metadata: name, author, and license; not site configuration | No changes needed to use the theme |
+| Root `hugo.toml` | Default settings inherited by sites using the theme | Keep personal settings in your own site |
+| `exampleSite/hugo.toml` | Complete sample site configuration with site details, menus, and optional features | Copy to your site's root, then customize |
+| `exampleSite/content/` | Sample posts, project, and about page | Copy into your site, then replace with your content |
+| `layouts/`, `assets/`, `static/`, `archetypes/` | Theme templates, styles, scripts, fonts, icons, and post archetypes | Keep these to run the site |
 
-| Setup | File organization | Best suited for | Updates |
-| --- | --- | --- | --- |
-| Reusable theme | Your site owns its configuration and content; Selene lives in `themes/selene/` | Existing Hugo sites, or independent theme updates | Update the theme submodule |
-| Complete blog template | Configuration and `content/` live alongside theme templates and resources in the repository root | Starting a blog directly from a downloaded copy | Merge upstream changes with Git and resolve conflicts, or synchronize files manually |
+`exampleSite/` depends on this repository's theme files; downloading that directory
+alone is insufficient. It demonstrates and tests the theme. Its sample posts are
+not automatically included in sites that install Selene as a theme.
+**Copy site configuration from `exampleSite/hugo.toml`, not `theme.toml`.**
 
-When distributing a reusable theme, keeping `exampleSite/` makes previewing and
-maintenance easier. Its sample content is not automatically included in a user's
-site. To use the repository as your own blog template, copy its sample configuration
-and content into the root; the resulting site no longer needs an external theme
-reference. Both workflows are described below.
+Choose one workflow: use option one for independent theme updates, or option two
+to write your blog directly in this repository.
 
-## Install in an existing site
+## Option one: use Selene as a reusable theme
 
-Run the following in the root directory of your Hugo site:
+Keep site configuration and content in your own site, with Selene in `themes/selene/`.
+
+### Create a new blog
+
+These commands create a new site with sample content:
 
 ```sh
+hugo new site my-blog
+cd my-blog
+git init
 git submodule add https://github.com/zhuzaiye/selene.git themes/selene
+cp themes/selene/exampleSite/hugo.toml hugo.toml
+cp -R themes/selene/exampleSite/content/. content/
 ```
 
-You can also copy the theme directly into `themes/selene/`. That directory should
-directly contain `theme.toml`, `layouts/`, and the other theme files.
-Enable the theme at the top level of your site's `hugo.toml` or `config.toml`:
+Edit `baseURL`, `title`, `locale`, `params.author`, `params.description`, menus, and
+social links in `my-blog/hugo.toml`. Use `locale = "en-US"` for English; translate or
+replace the Chinese sample content separately.
+Keep the top-level `theme = "selene"` to load the theme from `themes/selene/`.
+Also keep `theme = "toggle"` under `[params]`, which controls light and dark modes.
 
-```toml
-baseURL = "https://example.org/"
-locale = "en-US"
-theme = "selene"
-
-[pagination]
-  pagerSize = 10
-
-[markup.highlight]
-  noClasses = false
-
-[params]
-  author = "Your Name"
-  description = "Recording thoughts and sharing projects."
-  theme = "toggle"
-  toc = true
-
-  [[params.menu]]
-    name = "Articles"
-    url = "/posts/"
-  [[params.menu]]
-    name = "Projects"
-    url = "/projects/"
-  [[params.menu]]
-    name = "About"
-    url = "/about/"
+```sh
+hugo server -D
 ```
 
-The top-level `theme` selects the Hugo theme; `params.theme` controls light and
-dark modes. They serve different purposes. Files in your site's root `layouts/`,
-or at matching paths in `assets/` and `static/`, override theme resources.
-If you are migrating from the original Tracelog site, make a backup first, then
-move duplicate templates and resources out of the way so future theme updates
-can take effect. Keep your personal `content/`, `static/imgs/`, and site configuration.
+Open `http://localhost:1313/`. Press `Ctrl+C` to stop the preview, then run `hugo`
+to build into `my-blog/public/`. Edit `my-blog/content/` and `my-blog/hugo.toml`,
+and put personal images in `my-blog/static/imgs/`. Do not write personal posts
+in `themes/selene/exampleSite/`.
 
-## Preview the example and build
+### Use an existing Hugo site
 
-Run the following in the theme repository root (the directory should be named `selene`):
+Run the `git submodule add` command above in your existing site's root; initialize
+its Git repository first if needed. Merge the settings you need from
+`themes/selene/exampleSite/hugo.toml`, setting the top-level `theme = "selene"`.
+Keep existing content and personal configuration; skip both `cp` commands from
+the new-blog instructions. Without Git, extract a downloaded theme into
+`themes/selene/`, ensuring it directly contains `layouts/` and `theme.toml`.
+
+Your site's own `layouts/` and files at matching paths in `assets/` and `static/`
+override theme files. Check old files when switching themes so they do not mask
+Selene's implementation.
+
+### Update the theme
+
+Run from your own site's root:
+
+```sh
+git submodule update --init --recursive
+git -C themes/selene pull --ff-only origin master
+hugo
+```
+
+Preview the result, then run `git add themes/selene` and commit to record the new
+theme version. ZIP installations require manual replacement of theme files;
+back up personal changes before replacing them.
+
+## Option two: use this repository directly as a blog
+
+This keeps personal content and theme code in one repository; no `themes/selene/`
+is needed. The copy commands below assume a fresh download. Back up and merge
+manually if you already have personal configuration or a root `content/` directory.
+
+```sh
+git clone https://github.com/zhuzaiye/selene.git
+cd selene
+cp hugo.toml hugo.toml.bak
+cp exampleSite/hugo.toml hugo.toml
+cp -R exampleSite/content ./
+```
+
+Alternatively, download and extract the ZIP, enter its directory, and start with
+the first `cp` command.
+
+Edit the root `hugo.toml`:
+
+1. **Delete the top-level `theme = "selene"` line.** Hugo will use the root theme
+   files directly; keeping the line makes Hugo look for `themes/selene/` instead.
+2. **Keep `theme = "toggle"` under `[params]`** to control light and dark modes.
+3. Customize `baseURL`, `title`, `locale`, author, description, menus, and social
+   links. Use `locale = "en-US"` for English, and translate or replace the Chinese sample posts.
+
+Run from the repository root:
+
+```sh
+hugo server -D
+```
+
+Open `http://localhost:1313/`. Press `Ctrl+C` to stop the preview, then run `hugo`
+to build into the root `public/` directory. No `--source`, `--themesDir`, or
+`--theme` flags are needed.
+
+The resulting file layout is:
+
+```text
+selene/
+├── hugo.toml        # Personal site configuration; top-level theme removed
+├── content/         # Personal posts, projects, and about page
+├── static/imgs/     # Personal images
+├── layouts/         # Keep: theme templates
+├── assets/          # Keep: theme styles and scripts
+├── static/          # Keep: theme fonts and icons, plus personal images
+├── archetypes/      # Keep: post archetypes
+└── exampleSite/     # Unused by the default build; may be deleted after verification
+```
+
+Edit the root `content/` and `hugo.toml` from now on. You may delete
+`hugo.toml.bak` after verifying the migration.
+
+Updates remain possible, but theme code and personal files share a repository,
+so updates may produce conflicts. After saving the blog in your own Git repository,
+add the original repository as an upstream remote:
+
+```sh
+git remote add upstream https://github.com/zhuzaiye/selene.git
+git fetch upstream
+```
+
+Commit or back up personal changes, then run `git merge upstream/master`. Skip
+adding the remote if `upstream` already exists. Resolve conflicts while preserving
+personal content and settings, especially ensuring the root `hugo.toml` does not
+regain a top-level `theme = "selene"`. Preview and rebuild after merging.
+ZIP users must compare and synchronize updates manually. Use option one if you
+want to update the theme independently.
+
+## Preview the bundled example only
+
+To preview without converting directories or copying configuration, run from the
+repository root, with the repository directory named `selene`:
 
 ```sh
 hugo server --source exampleSite --themesDir ../.. --theme selene -D
 ```
 
-You can also copy the configuration and content from `exampleSite/` into your own
-Hugo site, then install the theme. Run the following in your site's root directory:
+This reads `exampleSite/hugo.toml` and `exampleSite/content/`; the root provides
+the theme. Build with `hugo --source exampleSite --themesDir ../.. --theme selene`;
+output goes to `exampleSite/public/`.
+
+Before publishing, set the correct `baseURL` and `draft: false` on posts you want
+to publish; ordinary `hugo` builds exclude drafts. Font CSS uses absolute `/fonts/`
+paths, suitable for deployment at the domain root. For a subpath such as `/blog/`,
+adjust font URLs in `assets/css/fonts.css`.
+
+## Source repository, public, and publishing on GitHub
+
+This project contains **Hugo source files**: Markdown content, configuration,
+templates, styles, and scripts. Running `hugo` generates **deployable website
+files** in `public/`: HTML, CSS, JavaScript, fonts, and images.
+A source repository on GitHub provides backups, collaboration, and theme updates.
+To serve the blog at a URL, configure hosting such as GitHub Pages; pushing Hugo
+source alone does not automatically publish a working site.
+
+Use two separate repositories:
+
+| Example repository | Contents | Purpose |
+| --- | --- | --- |
+| `blog-source` | Site source, excluding `public/` | Writing, configuration, history, and theme updates |
+| `YOUR_USERNAME.github.io` | Files inside `public/`, with `index.html` at the repository root | GitHub Pages hosting at `https://YOUR_USERNAME.github.io/` |
+
+This project's `.gitignore` excludes `/public/` and `/exampleSite/public/`, so
+`git add .` in the source repository does not add newly generated pages. Do not
+force them into the source repository with `git add -f public`. The workflow below
+keeps the publishing directory beside the source directory, with separate Git histories.
+
+### 1. Create two empty repositories on GitHub
+
+Replace every `YOUR_USERNAME` in the commands with your GitHub username.
+Create `blog-source` and a public `YOUR_USERNAME.github.io` repository. Do not
+initialize either with a README, license, or `.gitignore`. The second repository
+name must match your username to use the personal site URL above.
+The commands use HTTPS; authenticate Git pushes using a credential manager or
+a personal access token first.
+
+### 2. Push source to your own repository
+
+Complete option one or two above, then work from **your site's root**. Review
+`git status` and move unwanted configuration backups out before committing.
+
+If you cloned Selene for option two, `origin` points to the theme author's
+repository. Rename it to retain it as the upstream remote:
 
 ```sh
-hugo server -D
-hugo --baseURL https://example.org/
+git remote -v
+git remote rename origin upstream
+git remote add origin https://github.com/YOUR_USERNAME/blog-source.git
 ```
 
-The default preview URL is `http://localhost:1313/`, and build output is written
-to the site's `public/` directory. Production builds exclude drafts by default;
-set each post's `draft` to `false` before publishing.
-The bundled font CSS uses absolute `/fonts/` paths, so deployment at the domain
-root is recommended. For deployment under a subpath such as `/blog/`, override
-`assets/css/fonts.css` in your site and adjust the font URLs.
+If `upstream` already exists, skip renaming and run
+`git remote set-url origin https://github.com/YOUR_USERNAME/blog-source.git` instead.
+This is the same upstream used for theme updates above; do not add it twice.
 
-## Use the repository as a complete blog template
+For a new site created with option one or a ZIP download, use this alternative
+instead. Skip `git init` if already initialized, and do not add `origin` again if
+it already points to your own repository:
 
-These steps assume a freshly downloaded copy. If the root already contains your
-own configuration or `content/`, back them up first and merge configuration and
-content manually to avoid overwriting files with the same names.
+```sh
+git init
+git remote add origin https://github.com/YOUR_USERNAME/blog-source.git
+```
 
-1. Download the repository and enter its directory. Alternatively, download and
-   extract the ZIP, then open the extracted directory in your terminal:
+After configuring the remote, commit and push for the first time:
 
-   ```sh
-   git clone https://github.com/zhuzaiye/selene.git
-   cd selene
-   ```
+```sh
+git add .
+git commit -m "Set up blog source"
+git branch -M main
+git push -u origin main
+```
 
-2. Back up the theme defaults in the root, replace them with the example site
-   configuration, and copy the example content:
+### 3. Create a separate publishing directory and upload the site
 
-   ```sh
-   cp hugo.toml hugo.toml.bak
-   cp exampleSite/hugo.toml hugo.toml
-   cp -R exampleSite/content ./
-   ```
+Set `baseURL = "https://YOUR_USERNAME.github.io/"` in your site's `hugo.toml` first.
+Run these commands from **your site's root**. They create a sibling publishing
+directory, which must not already exist. The commands require `rsync` (usually
+included on macOS; install through your package manager on Linux):
 
-   The current example site contains only configuration and `content/`. If site
-   resources such as `exampleSite/static/` are added later, merge their files into
-   the corresponding root directories too, preserving existing theme resources.
+```sh
+mkdir ../YOUR_USERNAME.github.io
+git -C ../YOUR_USERNAME.github.io init -b main
+git -C ../YOUR_USERNAME.github.io remote add origin https://github.com/YOUR_USERNAME/YOUR_USERNAME.github.io.git
+hugo --cleanDestinationDir
+rsync -av --delete --exclude='.git' public/ ../YOUR_USERNAME.github.io/
+touch ../YOUR_USERNAME.github.io/.nojekyll
+git -C ../YOUR_USERNAME.github.io add .
+git -C ../YOUR_USERNAME.github.io commit -m "Publish blog"
+git -C ../YOUR_USERNAME.github.io push -u origin main
+```
 
-3. Edit the root `hugo.toml`: remove the top-level `theme = "selene"`, since Hugo
-   will use the templates and resources in the root directly. Keep
-   `theme = "toggle"` under `[params]`; it controls light and dark modes.
-   Customize `baseURL`, `title`, `locale`, author, description, menus, and social
-   links. For an English site, use `locale = "en-US"`; the sample content is still
-   in Chinese and must be edited separately.
+`hugo --cleanDestinationDir` cleans and regenerates `public/`; do not keep personal
+files there. The trailing `/` in `public/` copies its contents rather than nesting
+a `public` directory. `--delete` removes publishing files absent from the build,
+so deleted posts do not remain online. `--exclude='.git'` preserves repository
+history. Use that destination only for generated output. `.nojekyll` lets GitHub
+Pages serve Hugo's static files directly.
 
-4. Preview and build directly from the root, without `--source exampleSite`,
-   `--themesDir`, or `--theme`:
+### 4. Enable GitHub Pages
 
-   ```sh
-   hugo server -D
-   ```
+In `YOUR_USERNAME.github.io`, open **Settings → Pages**, set **Source** to
+**Deploy from a branch**, select **main** and **/(root)**, and save.
+After deployment finishes, visit `https://YOUR_USERNAME.github.io/`.
+The publishing repository must contain `index.html` directly at its root. Do not
+select the source repository or its `public/` directory as a branch publishing
+folder; GitHub supports only the repository root or `/docs` for that workflow.
+See [GitHub's publishing source documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
-   Preview at `http://localhost:1313/`. After checking the site, stop the preview
-   server and build:
+### 5. Routine updates: save source, then publish pages
 
-   ```sh
-   hugo
-   ```
+After editing and previewing, run from your site's root:
 
-   Output goes to the root `public/` directory. Set the correct `baseURL` and
-   `draft: false` for posts you want to publish before deployment.
+```sh
+git add .
+git commit -m "Update blog content"
+git push origin main
+hugo --cleanDestinationDir
+rsync -av --delete --exclude='.git' public/ ../YOUR_USERNAME.github.io/
+touch ../YOUR_USERNAME.github.io/.nojekyll
+git -C ../YOUR_USERNAME.github.io add .
+git -C ../YOUR_USERNAME.github.io commit -m "Update published site"
+git -C ../YOUR_USERNAME.github.io push origin main
+```
 
-5. Write posts in the root `content/posts/`, manage projects in `content/projects/`,
-   edit `content/about.md`, and put personal images in the root `static/imgs/`.
-   `exampleSite/` no longer participates in the default build; keep it as a
-   reference or delete it after verifying the migration. Keep the root `layouts/`,
-   `assets/`, `static/`, and `archetypes/`, as they still provide the site's theme files.
-
-Updates remain possible, but the theme cannot be upgraded independently through a
-submodule in this setup. With Git, save your blog in a personal repository, configure
-the original Selene repository as an upstream remote, and commit or back up personal
-changes before merging the upstream changes you need and resolving conflicts.
-Check the root `hugo.toml` especially, so updates do not restore the theme reference
-or discard your site settings. With a ZIP download, compare and synchronize updates
-manually. Preview and build after updating, checking that personal posts, images,
-and configuration remain correct. Prefer the submodule setup above if independent
-theme upgrades are a priority.
+Skip a repository's commit if it has no changes. Source and publishing pushes
+are independent: saving source still requires building and pushing the generated
+pages to update the live site. On another computer, clone your own source
+repository (use `git clone --recurse-submodules` for option one), then clone the
+publishing repository into the sibling `YOUR_USERNAME.github.io/` directory.
+Continue with the routine update commands; do not initialize the repositories again.
 
 ## Site settings
 
@@ -191,8 +319,8 @@ Place the following settings under `[params]`:
 | `logo` | Navigation image used when no avatar is configured |
 | `favicon` | Image path relative to `assets/`, such as `imgs/favicon.png` |
 | `stylesheets` | Array of additional CSS resources relative to `assets/`, such as `["css/custom.css"]` |
-| `mathjax` | Whether to load MathJax from a CDN; disabled by default |
-| `mathjax_dollar_inline_enable` | Whether to allow `$...$` inline formulas; also requires `mathjax` to be enabled |
+| `mathjax` | Whether to load MathJax from a CDN; enabled by the theme defaults |
+| `mathjax_dollar_inline_enable` | Whether to allow `$...$` inline formulas; enabled by the theme defaults and requires `mathjax` |
 | `use_cdn` | Whether to load additional fonts from a CDN; disabled by default |
 
 Use `[[params.menu]]` for menu items, which appear in configuration order.
@@ -215,6 +343,33 @@ Example social links:
 
 The `icon` value matches a filename in `static/icons/social/` without its `.svg`
 extension. RSS uses Hugo's default `/index.xml` output.
+
+## Content structure
+
+The three main parts of `content/` hold posts, projects, and the about page:
+
+```text
+content/
+├── posts/
+│   └── welcome.md    # One blog post
+├── projects/
+│   └── selene.md     # One project
+└── about.md          # The about page: a file, not a directory
+```
+
+| Path | Purpose and pages | How to maintain it |
+| --- | --- | --- |
+| `posts/*.md` | Blog posts; `/` and `/posts/` list posts, and `posts/welcome.md` generates `/posts/welcome/` by default | Use one Markdown file per post; put its title, date, tags, and cover in front matter, followed by the body |
+| `projects/*.md` | Project showcase; `/projects/` displays project cards, and `projects/selene.md` generates `/projects/selene/` by default | Use one Markdown file per project; `weight` controls order, `description` supplies the card summary, and `link_to` controls the card destination; omit `link_to` to open the project's detail page |
+| `about.md` | Personal introduction, at `/about/` by default | Edit this file directly, keeping `type: about` in front matter; use the body for your background, site introduction, and contact details |
+
+These paths are relative to the root of the site you are running. For the bundled
+preview, edit `exampleSite/content/`; for option one, edit your own site's
+`content/`; for option two, edit `content/` in the repository root.
+The URLs above assume no custom URL settings and deployment at the domain root.
+Add more `.md` files for new posts and projects; edit the existing `about.md` for
+the about page. Put images in your site's `static/imgs/` and reference them as
+`/imgs/filename`. See “Write posts” and “Project and about pages” below for field examples.
 
 ## Write posts
 
@@ -351,8 +506,6 @@ The Elasticlunr search scripts and loading configuration are retained, but no
 index-generation template or search interface is included. Setting
 `build_search_index = true` alone does not provide complete search functionality;
 leave it disabled by default.
-Analytics scripts remain in `assets/js/imamu.js` and `count.js`. Verify their
-configuration and service availability before integrating them as needed.
 
 ## Directory structure and maintenance
 
@@ -386,15 +539,6 @@ The original project includes a minified `main.min.js`, which templates load
 directly. Update the minified version whenever you change `main.js`.
 Separately loaded files such as `codeblock.js`, `comments.js`, and `toc.js` are
 minified and fingerprinted by Hugo during the build.
-
-After updating the submodule, preview and build the site before committing the
-submodule version recorded by the parent site:
-
-```sh
-git submodule update --init --recursive
-git -C themes/selene pull --ff-only
-hugo
-```
 
 ## License
 

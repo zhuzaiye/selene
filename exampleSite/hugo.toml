@@ -1,11 +1,16 @@
+# Copy this file to your site's root as hugo.toml, then edit your site details.
 baseURL = "https://example.org/"
 title = "Selene 示例站点"
 locale = "zh-CN"
+# Keep this when using themes/selene; remove it when running this repository as a blog.
 theme = "selene"
 enableRobotsTXT = true
 
 [pagination]
   pagerSize = 10
+
+[module.hugoVersion]
+  min = "0.158.0"
 
 [markup.highlight]
   noClasses = false
@@ -15,11 +20,17 @@ enableRobotsTXT = true
 [params]
   author = "示例作者"
   description = "记录思考，分享作品。"
-  theme = "toggle"
+  # Empty image settings use the built-in navigation icon and omit the post avatar.
+  # To use your own image, put it in static/imgs/ and set /imgs/your-file.png here.
+  avatar = ""
+  home_avatar = ""
+  theme = "toggle" # light, dark, auto, toggle
   toc = true
-  mathjax = false
-  mathjax_dollar_inline_enable = false
+  mathjax = true
+  mathjax_dollar_inline_enable = true
+  use_cdn = false
 
+  # Menu order follows this array; no weight field is needed.
   [[params.menu]]
     name = "文章"
     url = "/posts/"
@@ -38,3 +49,20 @@ enableRobotsTXT = true
     name = "RSS"
     url = "/index.xml"
     icon = "rss"
+
+  # Optional: uncomment and replace with your own links.
+  # [[params.social]]
+  #   name = "Email"
+  #   url = "mailto:you@example.org"
+  #   icon = "email"
+  # [[params.social]]
+  #   name = "X"
+  #   url = "https://x.com/yourname"
+  #   icon = "x"
+
+  # Optional: uncomment the entire block only after configuring your GitHub OAuth app.
+  # [params.gitalk]
+  #   owner = "your-github-username"
+  #   repo = "your-comments-repo"
+  #   clientId = "your-oauth-client-id"
+  #   clientSecret = "your-oauth-client-secret"

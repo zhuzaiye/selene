@@ -1,7 +1,8 @@
+.vscode
+.DS_Store
 /public/
 /resources/
 /.hugo_build.lock
 /exampleSite/public/
 /exampleSite/resources/
 /exampleSite/.hugo_build.lock
-.DS_Store
